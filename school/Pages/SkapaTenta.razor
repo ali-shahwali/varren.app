@@ -1,22 +1,24 @@
 ﻿@using school.Data
 @using System.IO
+@using System.Text;
+
 @if (file != null)
 {
     <p>Name: @file.Name</p>
     <p>Size in bytes: @file.Size</p>
     <p>Last modified date: @file.LastModified.ToShortDateString()</p>
     <p>Content type (not always supplied by the browser): @file.Type</p>
-    <p>Number of lines read: @numLines</p>
+    <h1>@ByteArray</h1>
+    <h1>@someString</h1>
 }
-
 
 <div style="max-width: 400px;">
     <MudCard>
         <MudCardContent>
             <EditForm Model="@tentor" OnValidSubmit="OnValidSubmit">
-                <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" />
-                <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" />
-                <BlazorInputFile.InputFile id="fileInput" OnChange="UploadFiles" hidden/>
+                @* <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> *@
+                @* <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> *@
+                <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden/>
                 <MudButton HtmlTag="label"
                            Variant="Variant.Filled"
                            Color="Color.Primary"
@@ -35,23 +37,36 @@
 
     IFileListEntry file;
 
-    public int numLines;
+    public string ByteArray { get; set; }
+    public string someString { get; set; }
 
-    private async void UploadFiles(IFileListEntry[] files)
+    public Byte[] Bdata { get; set; }
+
+    public async void HandleFileSelected(IFileListEntry[] files)
     {
-
         file = files.FirstOrDefault();
-        numLines = 0;
+        await GetFileData();
+    }
+
+
+    // on valid submit method
+    async Task GetFileData()
+    {
         using (var reader = new System.IO.StreamReader(file.Data))
         {
-            await reader.ReadAsync();
+            ByteArray = await reader.ReadToEndAsync();
+
+
+            // turn to byte array for database
+            Bdata = Encoding.UTF8.GetBytes(ByteArray);
+
+            // turn back to string
+            someString = Encoding.UTF8.GetString(Bdata);
         }
     }
 
-    private void OnValidSubmit()
-    {
-
+    public void OnValidSubmit(EditContext context) {
+        
     }
-
 }
 
