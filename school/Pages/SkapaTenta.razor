@@ -2,23 +2,25 @@
 @using System.IO
 @using System.Text;
 
+@inject school.Data.ApplicationDbContext _context
+
 @if (file != null)
 {
     <p>Name: @file.Name</p>
     <p>Size in bytes: @file.Size</p>
     <p>Last modified date: @file.LastModified.ToShortDateString()</p>
     <p>Content type (not always supplied by the browser): @file.Type</p>
-    <h1>@ByteArray</h1>
-    <h1>@someString</h1>
+    <h1>@Data</h1>
+    @*<h1>@someString</h1>*@
 }
 
 <div style="max-width: 400px;">
     <MudCard>
         <MudCardContent>
             <EditForm Model="@tentor" OnValidSubmit="OnValidSubmit">
-                @* <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> *@
-                @* <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> *@
-                <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden/>
+                 <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> 
+                 <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> 
+                <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
                 <MudButton HtmlTag="label"
                            Variant="Variant.Filled"
                            Color="Color.Primary"
@@ -34,18 +36,20 @@
 </div>
 @code {
     Tentor tentor = new Tentor();
-
     IFileListEntry file;
-
-    public string ByteArray { get; set; }
-    public string someString { get; set; }
-
+    public string Data { get; set; }
+    //public string someString { get; set; }
     public Byte[] Bdata { get; set; }
+
+
 
     public async void HandleFileSelected(IFileListEntry[] files)
     {
         file = files.FirstOrDefault();
+
         await GetFileData();
+
+        StateHasChanged();
     }
 
 
@@ -54,19 +58,30 @@
     {
         using (var reader = new System.IO.StreamReader(file.Data))
         {
-            ByteArray = await reader.ReadToEndAsync();
+            Data = await reader.ReadToEndAsync();
 
 
             // turn to byte array for database
-            Bdata = Encoding.UTF8.GetBytes(ByteArray);
+            Bdata = Encoding.UTF8.GetBytes(Data);
 
             // turn back to string
-            someString = Encoding.UTF8.GetString(Bdata);
+            //someString = Encoding.UTF8.GetString(Bdata);
         }
     }
 
-    public void OnValidSubmit(EditContext context) {
-        
+    public void OnValidSubmit(EditContext context)
+    {
+        // build data object
+        tentor = new Tentor()
+        {
+            Datum = tentor.Datum,
+            Examinator = tentor.Examinator,
+            Data = Bdata
+        };
+
+        // this is where we will save to the database
+        _context.Tentor.Add(tentor);
+        _context.SaveChanges();
     }
 }
 
