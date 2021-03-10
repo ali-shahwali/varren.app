@@ -1,0 +1,57 @@
+﻿@using school.Data
+@using System.IO
+@if (file != null)
+{
+    <p>Name: @file.Name</p>
+    <p>Size in bytes: @file.Size</p>
+    <p>Last modified date: @file.LastModified.ToShortDateString()</p>
+    <p>Content type (not always supplied by the browser): @file.Type</p>
+    <p>Number of lines read: @numLines</p>
+}
+
+
+<div style="max-width: 400px;">
+    <MudCard>
+        <MudCardContent>
+            <EditForm Model="@tentor" OnValidSubmit="OnValidSubmit">
+                <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" />
+                <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" />
+                <BlazorInputFile.InputFile id="fileInput" OnChange="UploadFiles" hidden/>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                    Upload Files
+                </MudButton>
+            </EditForm>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
+        </MudCardActions>
+    </MudCard>
+</div>
+@code {
+    Tentor tentor = new Tentor();
+
+    IFileListEntry file;
+
+    public int numLines;
+
+    private async void UploadFiles(IFileListEntry[] files)
+    {
+
+        file = files.FirstOrDefault();
+        numLines = 0;
+        using (var reader = new System.IO.StreamReader(file.Data))
+        {
+            await reader.ReadAsync();
+        }
+    }
+
+    private void OnValidSubmit()
+    {
+
+    }
+
+}
+
