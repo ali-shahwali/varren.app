@@ -1,39 +1,29 @@
-﻿@using school.Data
-@using System.IO
+﻿@using System.IO
 @using System.Text;
 
 @inject school.Data.ApplicationDbContext _context
 
-@if (file != null)
-{
-    <p>Name: @file.Name</p>
-    <p>Size in bytes: @file.Size</p>
-    <p>Last modified date: @file.LastModified.ToShortDateString()</p>
-    <p>Content type (not always supplied by the browser): @file.Type</p>
-    <h1>@Data</h1>
-    @*<h1>@someString</h1>*@
-}
-
-<div style="max-width: 400px;">
-    <MudCard>
-        <MudCardContent>
-            <EditForm Model="@tentor" OnValidSubmit="OnValidSubmit">
-                 <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> 
-                 <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> 
+<div style="max-width: 600px;">
+    <EditForm Model="@tentor" OnSubmit="OnValidSubmit">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> 
+                <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> 
                 <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
                 <MudButton HtmlTag="label"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
                     Upload Files
                 </MudButton>
-            </EditForm>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
-        </MudCardActions>
-    </MudCard>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
 </div>
+
 @code {
     Tentor tentor = new Tentor();
     IFileListEntry file;
@@ -82,6 +72,9 @@
         // this is where we will save to the database
         _context.Tentor.Add(tentor);
         _context.SaveChanges();
+
+        Snackbar.Add("Fil skapad", Severity.Normal);
+        NavigationManager.NavigateTo("/ID1019");
     }
 }
 
