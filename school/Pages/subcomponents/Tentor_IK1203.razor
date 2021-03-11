@@ -1,4 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
 
 <MudTable Items="@tentor" Hover="true" Breakpoint="Breakpoint.Sm">
@@ -27,6 +27,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        tentor = await _context.Tentor_ID1019.ToListAsync();
+        tentor = await _context.Tentor_IK1203.ToListAsync();
     }
 }

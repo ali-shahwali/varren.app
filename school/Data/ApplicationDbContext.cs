@@ -13,6 +13,7 @@ namespace school.Data
         {
            
         }
-        public DbSet<Tentor> Tentor { get; set; }
+        public DbSet<Tentor> Tentor_ID1019 { get; set; }
+        public DbSet<Tentor> Tentor_IK1203 { get; set; }
     }
 }
