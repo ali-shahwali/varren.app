@@ -8,25 +8,27 @@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Datum">@context.Datum</MudTd>
+        <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
         <MudTd>Visa</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
+        </MudTd>
     </RowTemplate>
 </MudTable>
-<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-    Lägg till
-</MudButton>
+
 
 @code {
-    private IEnumerable<Tentor> tentor = new List<Tentor>();
+    private List<Tentor> tentor = new List<Tentor>();
 
-    private void OpenDialog()
-    {
-        DialogService.Show<SkapaTenta>("Skapa tenta");
+    public Task Delete(Tentor tentor) {
+        _context.Tentor.Remove(tentor);
+        _context.SaveChanges();
+        Snackbar.Add("Deleted", Severity.Normal);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        tentor = await _context.Tentor_ID1019.ToListAsync();
+        tentor = await _context.Tentor.Where(x => x.Kursnamn == "ID1019").ToListAsync();
     }
 }

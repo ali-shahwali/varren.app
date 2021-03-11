@@ -18,6 +18,9 @@
             <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
             <MudNavLink Href="/IK1203">IK1203</MudNavLink>
             <MudNavLink Href="/ID1019">ID1019</MudNavLink>
+            <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+                Lägg till
+            </MudButton>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -31,6 +34,11 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private void OpenDialog()
+    {
+        DialogService.Show<SkapaTenta>("Skapa tenta");
     }
 }
 

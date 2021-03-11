@@ -7,13 +7,17 @@
     <EditForm Model="@tentor" OnSubmit="OnValidSubmit">
         <MudCard>
             <MudCardContent>
-                <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> 
-                <MudDatePicker Label="Datum" @bind-Date="tentor.Datum" /> 
+                <MudSelect T="string" @bind-Value="tentor.Kursnamn" Label="Kursnamn">
+                    <MudSelectItem Value="@("ID1019")"> Programmering 2 </MudSelectItem>
+                    <MudSelectItem Value="@("IK1203")"> Nätverk och Kommunikation </MudSelectItem>
+                </MudSelect>
+                <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" />
+                <MudDatePicker Label="Datum" @bind-Date="tentor.Datum" />
                 <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
                 <MudButton HtmlTag="label"
-                        Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
                     Ladda upp
                 </MudButton>
             </MudCardContent>
@@ -25,10 +29,11 @@
 </div>
 
 @code {
+    
     Tentor tentor = new Tentor();
+
     IFileListEntry file;
     public string Data { get; set; }
-    //public string someString { get; set; }
     public Byte[] Bdata { get; set; }
 
 
@@ -64,6 +69,7 @@
         // build data object
         tentor = new Tentor()
         {
+            Kursnamn = tentor.Kursnamn,
             Datum = tentor.Datum,
             Examinator = tentor.Examinator,
             Data = Bdata
@@ -73,8 +79,10 @@
         _context.Tentor.Add(tentor);
         _context.SaveChanges();
 
+        StateHasChanged();
         Snackbar.Add("Fil skapad", Severity.Normal);
         NavigationManager.NavigateTo("/ID1019");
+
     }
 }
 

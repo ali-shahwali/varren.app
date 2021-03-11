@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using school.Data;
 
-namespace school.Data.Migrations
+namespace school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210310191342_TentorModell")]
-    partial class TentorModell
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,10 +226,16 @@ namespace school.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Datum")
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime?>("Datum")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Examinator")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kursnamn")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

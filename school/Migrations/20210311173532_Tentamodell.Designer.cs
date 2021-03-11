@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using school.Data;
 
-namespace school.Data.Migrations
+namespace school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210310180821_init")]
-    partial class init
+    [Migration("20210311173532_Tentamodell")]
+    partial class Tentamodell
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -219,6 +219,30 @@ namespace school.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("school.Data.Tentor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime?>("Datum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Examinator")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kursnamn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tentor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

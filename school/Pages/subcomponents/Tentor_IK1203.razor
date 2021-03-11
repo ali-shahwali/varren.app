@@ -8,25 +8,19 @@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Datum">@context.Datum</MudTd>
+        <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
         <MudTd>Visa</MudTd>
     </RowTemplate>
 </MudTable>
-<MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-    Lägg till
-</MudButton>
+
 
 @code {
-    private IEnumerable<Tentor> tentor = new List<Tentor>();
+    private List<Tentor> tentor = new List<Tentor>();
 
-    private void OpenDialog()
-    {
-        DialogService.Show<SkapaTenta>("Skapa tenta");
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        tentor = await _context.Tentor_IK1203.ToListAsync();
+        tentor = await _context.Tentor.Where(x => x.Kursnamn == "IK1203").ToListAsync();
     }
 }
