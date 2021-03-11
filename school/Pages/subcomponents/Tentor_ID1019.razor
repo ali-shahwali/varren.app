@@ -1,10 +1,11 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
 
-<MudTable Items="@tentor" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Tentor>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
+        <MudTh></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -17,18 +18,27 @@
     </RowTemplate>
 </MudTable>
 
-
 @code {
-    private List<Tentor> tentor = new List<Tentor>();
+    public MudTable<Tentor> table;
+    public string PDFpath { get; set; }
 
-    public Task Delete(Tentor tentor) {
-        _context.Tentor.Remove(tentor);
-        _context.SaveChanges();
-        Snackbar.Add("Deleted", Severity.Normal);
+
+
+    // GET
+    private async Task<TableData<Tentor>> ServerReload(TableState state)
+    {
+        var results = await _context.Tentor.Where(x => x.Kursnamn == "ID1019").ToListAsync();
+        StateHasChanged();
+        return new TableData<Tentor>() { Items = results };
     }
 
-    protected override async Task OnInitializedAsync()
+    // DELETE
+    private async void Delete(Tentor item)
     {
-        tentor = await _context.Tentor.Where(x => x.Kursnamn == "ID1019").ToListAsync();
+        _context.Tentor.Remove(item);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
     }
 }

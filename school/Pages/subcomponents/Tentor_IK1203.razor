@@ -1,26 +1,45 @@
 @using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
 
-<MudTable Items="@tentor" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Tentor>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
+        <MudTh></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
         <MudTd>Visa</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
+        </MudTd>
     </RowTemplate>
 </MudTable>
 
 
 @code {
-    private List<Tentor> tentor = new List<Tentor>();
+  
+    public MudTable<Tentor> table;
 
-
-    protected override async Task OnInitializedAsync()
+    // GET
+    private async Task<TableData<Tentor>> ServerReload(TableState state)
     {
-        tentor = await _context.Tentor.Where(x => x.Kursnamn == "IK1203").ToListAsync();
+        var results = await _context.Tentor.Where(x => x.Kursnamn == "IK1203").ToListAsync();
+        StateHasChanged();
+        return new TableData<Tentor>() { Items = results };
     }
+
+    // DELETE
+    private async void Delete(Tentor item)
+    {
+        _context.Tentor.Remove(item);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
+    }
+
+    
 }

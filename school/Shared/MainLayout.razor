@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="DarkTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -18,9 +18,7 @@
             <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
             <MudNavLink Href="/IK1203">IK1203</MudNavLink>
             <MudNavLink Href="/ID1019">ID1019</MudNavLink>
-            <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-                Lägg till
-            </MudButton>
+            <MudNavLink Href="/skapa_tenta">Lägg till</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -36,9 +34,31 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    private void OpenDialog()
+    MudTheme DarkTheme = new MudTheme()
     {
-        DialogService.Show<SkapaTenta>("Skapa tenta");
-    }
+        Palette = new Palette()
+        {
+            Black = "#27272f",
+            Background = "#32333d",
+            BackgroundGrey = "#27272f",
+            Surface = "#373740",
+            DrawerBackground = "#27272f",
+            DrawerText = "rgba(255,255,255, 0.50)",
+            DrawerIcon = "rgba(255,255,255, 0.50)",
+            AppbarBackground = "#27272f",
+            AppbarText = "rgba(255,255,255, 0.70)",
+            TextPrimary = "rgba(255,255,255, 0.70)",
+            TextSecondary = "rgba(255,255,255, 0.50)",
+            ActionDefault = "#adadb1",
+            ActionDisabled = "rgba(255,255,255, 0.26)",
+            ActionDisabledBackground = "rgba(255,255,255, 0.12)"
+        },
+
+        LayoutProperties = new LayoutProperties()
+        {
+            DrawerWidthLeft = "260px",
+            DrawerWidthRight = "300px"
+        }
+    };
 }
 
