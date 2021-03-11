@@ -8,13 +8,13 @@
         <MudCard>
             <MudCardContent>
                 <MudTextField T="string" Label="Examinator" @bind-Value="tentor.Examinator" /> 
-                <MudDatePicker Label="Basic example" @bind-Date="tentor.Datum" /> 
+                <MudDatePicker Label="Datum" @bind-Date="tentor.Datum" /> 
                 <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
                 <MudButton HtmlTag="label"
                         Variant="Variant.Filled"
                         Color="Color.Primary"
                         StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
-                    Upload Files
+                    Ladda upp
                 </MudButton>
             </MudCardContent>
             <MudCardActions>

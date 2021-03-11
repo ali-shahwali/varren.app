@@ -1,9 +1,9 @@
 ﻿@inject school.Data.ApplicationDbContext _context
 
 <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-    Hello
+    Lägg till
 </MudButton>
-<MudTable items="tentor" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable items="tentor" Hover="true" Breakpoint="Breakpoint.Sm"> 
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
@@ -25,8 +25,8 @@
         DialogService.Show<SkapaTenta>("Skapa tenta");
     }
 
-    protected override async Task OnInitializedAsync() {
-        tentor = _context.Tentor.ToList();
+    protected override void OnInitializedAsync() {
+        tentor =  _context.Tentor.ToList();
         
     }
 }
