@@ -3,7 +3,7 @@
 <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
     Lägg till
 </MudButton>
-<MudTable items="tentor" Hover="true" Breakpoint="Breakpoint.Sm"> 
+<MudTable items="@tentor.Take(2)" Hover="true" Breakpoint="Breakpoint.Sm"> 
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
@@ -18,15 +18,13 @@
 
 
 @code {
-    List<Tentor> tentor = new List<Tentor>();
 
     private void OpenDialog()
     {
         DialogService.Show<SkapaTenta>("Skapa tenta");
     }
 
-    protected override void OnInitializedAsync() {
-        tentor =  _context.Tentor.ToList();
+    protected override async Task<Tentor> OnInitializedAsync() {
         
     }
 }
