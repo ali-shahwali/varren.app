@@ -13,20 +13,21 @@
     <RowTemplate>
         <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
-        <MudTd>Visa</MudTd>
+        <MudTd><MudIconButton OnClick="() => GetBytesFromPDF(context.Id)" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary"></MudIconButton></MudTd>
         <MudTd>
             <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
         </MudTd>
     </RowTemplate>
 </MudTable>
-@*<NoJS.PDFViewer.PDFViewer Document="@GetBytesFromPDF()"
+<NoJS.PDFViewer.PDFViewer Document="@pdf"
                           DocumentHeight="100%"
                           DocumentName="@DocumentName()"
-                          DocumentWidth="100%"
-                          SaveBtnImage="css/nojs-icons/icons8-save-26.png" />*@
+                          DocumentWidth="100%"/>
 
 @code {
     public MudTable<Tenta> table;
+
+    public byte[] pdf;
 
     // GET
     private async Task<TableData<Tenta>> ServerReload(TableState state)
@@ -46,10 +47,10 @@
         Snackbar.Add("Deleted", Severity.Normal);
     }
 
-    public byte[] GetBytesFromPDF()
+    public void GetBytesFromPDF(int Id)
     {
-        Tenta tenta = _context.Tentamen.Where(x => x.Id == 6).FirstOrDefault();
-        return Convert.FromBase64String(tenta.Data);
+        Tenta tenta = _context.Tentamen.Where(x => x.Id == Id).FirstOrDefault();
+        pdf = Convert.FromBase64String(tenta.Data);
     }
 
     public string DocumentName()

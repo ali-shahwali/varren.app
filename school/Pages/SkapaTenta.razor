@@ -1,7 +1,6 @@
 ﻿@page "/skapa_tenta"
 @using System.IO
 @using System.Text
-@using iTextSharp.text.pdf
 @inject school.Data.ApplicationDbContext _context
 
 
@@ -46,11 +45,9 @@
 
     Tenta tenta = new Tenta();
 
+    public string StrData;
+
     IFileListEntry file;
-
-    public string StrData { get; set; }
-
-    public byte[] byteData;
 
     public async void HandleFileSelected(IFileListEntry[] files)
     {
@@ -61,20 +58,36 @@
         StateHasChanged();
     }
 
-
-    // on valid submit method
-    async Task GetFileData()
+    private async Task GetFileData()
     {
-        using (var reader = new StreamReader(file.Data))
+
+        using (Stream stream = file.Data)
         {
-            StrData = await reader.ReadToEndAsync();
+            var fsSource = stream;
 
-            byteData = Encoding.UTF32.GetBytes(StrData);
+            byte[] bytes = new byte[fsSource.Length];
+            int numBytesToRead = (int)fsSource.Length;
+            int numBytesRead = 0;
 
-            StrData = Convert.ToBase64String(byteData);
+            while (numBytesToRead > 0)
+            {
+                
+                int n = await stream.ReadAsync(bytes, numBytesRead, numBytesToRead);
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            StrData = Convert.ToBase64String(bytes);
+            fsSource.Close();
         }
+
+
     }
 
+    // on valid submit method
     public void OnValidSubmit(EditContext context)
     {
         // build data object

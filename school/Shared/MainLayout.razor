@@ -10,7 +10,7 @@
         <MudAppBarSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+    <MudDrawer Width="300px" @bind-Open="_drawerOpen" Elevation="2">
         <MudNavMenu>
             <MudText Typo="Typo.h6" Class="px-4">Canvas 2.0</MudText>
             <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Kurser</MudText>
@@ -18,8 +18,10 @@
             <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
             <MudNavLink Href="/IK1203">IK1203</MudNavLink>
             <MudNavLink Href="/ID1019">ID1019</MudNavLink>
-            <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
-            <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
+            <MudNavGroup Title="Skapa" Expanded="true">
+                <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
+                <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
+            </MudNavGroup>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>

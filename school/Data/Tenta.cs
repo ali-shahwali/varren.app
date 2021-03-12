@@ -12,5 +12,7 @@ namespace school.Data
         public DateTime? Datum { get; set; }
         public string Examinator { get; set; }
         public string Data { get; set; }
+
+        
     }
 }
