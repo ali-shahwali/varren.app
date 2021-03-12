@@ -13,8 +13,7 @@ namespace school.Data
         {
 
         }
-        public DbSet<Tentor> Tentor { get; set; }
-
+        public DbSet<Tenta> Tentamen { get; set; }
         public DbSet<Övning> Övningar {get; set;}
     }
 }

@@ -1,7 +1,9 @@
 ﻿@using Microsoft.EntityFrameworkCore
+@using System.IO
+@using System.Text;
 @inject school.Data.ApplicationDbContext _context
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Tentor>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
@@ -17,26 +19,27 @@
         </MudTd>
     </RowTemplate>
 </MudTable>
-<NoJS.PDFViewer.PDFViewer Document="@GetBytesFromPDF()"
+@*<NoJS.PDFViewer.PDFViewer Document="@GetBytesFromPDF()"
                           DocumentHeight="100%"
                           DocumentName="@DocumentName()"
                           DocumentWidth="100%"
-                          SaveBtnImage="css/nojs-icons/icons8-save-26.png" />
+                          SaveBtnImage="css/nojs-icons/icons8-save-26.png" />*@
+
 @code {
-    public MudTable<Tentor> table;
+    public MudTable<Tenta> table;
 
     // GET
-    private async Task<TableData<Tentor>> ServerReload(TableState state)
+    private async Task<TableData<Tenta>> ServerReload(TableState state)
     {
-        var results = await _context.Tentor.Where(x => x.Kursnamn == "ID1019").ToListAsync();
+        var results = await _context.Tentamen.Where(x => x.Kursnamn == "ID1019").ToListAsync();
         StateHasChanged();
-        return new TableData<Tentor>() { Items = results };
+        return new TableData<Tenta>() { Items = results };
     }
 
     // DELETE
-    private async void Delete(Tentor item)
+    private async void Delete(Tenta item)
     {
-        _context.Tentor.Remove(item);
+        _context.Tentamen.Remove(item);
         _context.SaveChanges();
 
         await table.ReloadServerData();
@@ -45,10 +48,8 @@
 
     public byte[] GetBytesFromPDF()
     {
-        Tentor tenta = _context.Tentor.Where(x => x.Id == 20).FirstOrDefault();
-        string x = Convert.ToBase64String(tenta.Data);
-        
-        return ;
+        Tenta tenta = _context.Tentamen.Where(x => x.Id == 6).FirstOrDefault();
+        return Convert.FromBase64String(tenta.Data);
     }
 
     public string DocumentName()

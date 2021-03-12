@@ -1,7 +1,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Tentor>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
@@ -21,20 +21,20 @@
 
 @code {
   
-    public MudTable<Tentor> table;
+    public MudTable<Tenta> table;
 
     // GET
-    private async Task<TableData<Tentor>> ServerReload(TableState state)
+    private async Task<TableData<Tenta>> ServerReload(TableState state)
     {
-        var results = await _context.Tentor.Where(x => x.Kursnamn == "IK1203").ToListAsync();
+        var results = await _context.Tentamen.Where(x => x.Kursnamn == "IK1203").ToListAsync();
         StateHasChanged();
-        return new TableData<Tentor>() { Items = results };
+        return new TableData<Tenta>() { Items = results };
     }
 
     // DELETE
-    private async void Delete(Tentor item)
+    private async void Delete(Tenta item)
     {
-        _context.Tentor.Remove(item);
+        _context.Tentamen.Remove(item);
         _context.SaveChanges();
 
         await table.ReloadServerData();
