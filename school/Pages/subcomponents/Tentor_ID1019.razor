@@ -17,12 +17,13 @@
         </MudTd>
     </RowTemplate>
 </MudTable>
-
+<NoJS.PDFViewer.PDFViewer Document="@GetBytesFromPDF()"
+                          DocumentHeight="100%"
+                          DocumentName="@DocumentName()"
+                          DocumentWidth="100%"
+                          SaveBtnImage="css/nojs-icons/icons8-save-26.png" />
 @code {
     public MudTable<Tentor> table;
-    public string PDFpath { get; set; }
-
-
 
     // GET
     private async Task<TableData<Tentor>> ServerReload(TableState state)
@@ -40,5 +41,18 @@
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);
+    }
+
+    public byte[] GetBytesFromPDF()
+    {
+        Tentor tenta = _context.Tentor.Where(x => x.Id == 20).FirstOrDefault();
+        string x = Convert.ToBase64String(tenta.Data);
+        
+        return ;
+    }
+
+    public string DocumentName()
+    {
+        return "tenta.pdf";
     }
 }

@@ -1,0 +1,41 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject school.Data.ApplicationDbContext _context
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Övning>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Ämne</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Ämne">@context.Ämne</MudTd>
+        <MudTd>Visa</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    public MudTable<Övning> table;
+
+    // GET
+    private async Task<TableData<Övning>> ServerReload(TableState state)
+    {
+        var results = await _context.Övningar.Where(x => x.Kursnamn == "ID1019").ToListAsync();
+        StateHasChanged();
+        return new TableData<Övning>() { Items = results };
+    }
+
+    // DELETE
+    private async void Delete(Övning item)
+    {
+        _context.Övningar.Remove(item);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
+    }
+}
+

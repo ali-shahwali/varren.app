@@ -1,0 +1,88 @@
+﻿@page "/skapa_ovning"
+@using System.IO
+@using System.Text;
+
+@inject school.Data.ApplicationDbContext _context
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@övning" OnSubmit="OnValidSubmit">
+        <MudGrid Spacing="6" Class="mt-16">
+            <MudItem xs="7">
+                <MudText Typo="Typo.h5" GutterBottom="true">Skapa övning</MudText>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudSelect T="string" @bind-Value="övning.Kursnamn" Label="Kursnamn">
+                            <MudSelectItem Value="@("ID1019")"> Programmering 2 </MudSelectItem>
+                            <MudSelectItem Value="@("IK1203")"> Nätverk och Kommunikation </MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Ämne" @bind-Value="övning.Ämne" />
+                    </MudItem>
+                    <MudItem xs="6">
+                        <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                            Ladda upp
+                        </MudButton>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="6">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>
+
+@code {
+    Övning övning = new Övning();
+
+    IFileListEntry file;
+    public string Data { get; set; }
+    public Byte[] Bdata { get; set; }
+
+    public async void HandleFileSelected(IFileListEntry[] files)
+    {
+        file = files.FirstOrDefault();
+
+        await GetFileData();
+
+        StateHasChanged();
+    }
+
+    async Task GetFileData()
+    {
+        using (var reader = new System.IO.StreamReader(file.Data))
+        {
+            Data = await reader.ReadToEndAsync();
+
+
+            // turn to byte array for database
+            Bdata = Encoding.UTF8.GetBytes(Data);
+
+        }
+    }
+
+    public void OnValidSubmit(EditContext context)
+    {
+        // build data object
+        övning = new Övning()
+        {
+            Kursnamn = övning.Kursnamn,
+            Ämne = övning.Ämne,
+            Data = Bdata
+        };
+
+        // this is where we will save to the database
+        _context.Övningar.Add(övning);
+        _context.SaveChanges();
+
+        StateHasChanged();
+        Snackbar.Add("Fil skapad", Severity.Normal);
+        NavigationManager.NavigateTo($"/{övning.Kursnamn}");
+
+    }
+}

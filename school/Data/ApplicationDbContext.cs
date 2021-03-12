@@ -11,9 +11,10 @@ namespace school.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-           
+
         }
         public DbSet<Tentor> Tentor { get; set; }
-        
+
+        public DbSet<Övning> Övningar {get; set;}
     }
 }
