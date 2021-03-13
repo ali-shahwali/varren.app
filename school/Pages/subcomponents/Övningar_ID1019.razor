@@ -14,23 +14,21 @@
             <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
         </MudTd>
         <MudTd>
-            <MudIconButton OnClick="() => ToggleOverlayDelete(true)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2" />
-            <MudOverlay Visible="isVisibleDelete" DarkBackground="true" Absolute="true">
-                <MudCard Style="width: 200px; height: 200px">
-                    <MudCardContent>
-                        <MudText>Är du säker?</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(e => Delete(context, false))">Ja, ta bort!</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudOverlay>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" OnClick="@(e => OnButtonClicked(context))"/>
         </MudTd>
     </RowTemplate>
 </MudTable>
 
-<MudOverlay Style="padding-top: 350px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Avbryt">
+    <MessageContent>
+        Deleting can <b><i>not</i></b> be undone!
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Ta bort!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+<MudOverlay ZIndex="9999" Style="padding-top: 350px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
     <NoJS.PDFViewer.PDFViewer Document="@pdf"
                               DocumentHeight="1000px"
                               DocumentName="@DocumentName()"
@@ -39,15 +37,18 @@
 </MudOverlay>
 
 @code {
-    
+
     public MudTable<Övning> table;
 
     public byte[] pdf { get; set; }
 
     public bool isVisiblePdf;
 
-    public bool isVisibleDelete;
+    MudMessageBox mbox { get; set; }
 
+    Övning CurrentÖvning { get; set; }
+
+    string state = "Message box hasn't been opened yet";
 
     private async Task<TableData<Övning>> ServerReload(TableState state)
     {
@@ -56,15 +57,13 @@
         return new TableData<Övning>() { Items = results };
     }
 
-
-    private async void Delete(Övning item, bool toggle)
+    private async void Delete()
     {
-        _context.Övningar.Remove(item);
+        _context.Övningar.Remove(CurrentÖvning);
         _context.SaveChanges();
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);
-        ToggleOverlayDelete(toggle);
     }
 
     public void GetBytesFromPDF(Övning övning, bool toggle)
@@ -80,9 +79,11 @@
         StateHasChanged();
     }
 
-    public void ToggleOverlayDelete(bool toggle)
+    private async void OnButtonClicked(Övning övning)
     {
-        isVisibleDelete = toggle;
+        CurrentÖvning = övning;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
         StateHasChanged();
     }
 
@@ -90,6 +91,6 @@
     {
         return "tenta.pdf";
     }
-    
+
 }
 

@@ -3,7 +3,7 @@
 @using System.Text;
 @inject school.Data.ApplicationDbContext _context
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable Dense="true" ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
         <MudTh>Examinator</MudTh>
@@ -19,13 +19,13 @@
         <MudTd>
             <MudIconButton OnClick="() => ToggleOverlayDelete(true)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2" />
             <MudOverlay Visible="isVisibleDelete" DarkBackground="true" Absolute="true">
-                <MudCard Style="width: 200px; height: 200px">
+                <MudCard Style="width: 300px; height: 150px">
                     <MudCardContent>
-                        <MudText>Är du säker?</MudText>
+                        <MudText GutterBottom="true" Align="Align.Center">Är du säker?</MudText>
                     </MudCardContent>
-                    <MudCardActions>
+                    <MudCardActions Class="d-flex justify-space-between" mt="5">
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(e => Delete(context, false))">Ja, ta bort!</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudOverlay>
