@@ -13,21 +13,30 @@
     <RowTemplate>
         <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
-        <MudTd><MudIconButton OnClick="() => GetBytesFromPDF(context.Id)" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary"></MudIconButton></MudTd>
         <MudTd>
-            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary">
+                
+            </MudIconButton>
+        </MudTd>
+        <MudTd>
+            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"/>
         </MudTd>
     </RowTemplate>
 </MudTable>
-<NoJS.PDFViewer.PDFViewer Document="@pdf"
-                          DocumentHeight="100%"
-                          DocumentName="@DocumentName()"
-                          DocumentWidth="100%"/>
+<MudOverlay Style="padding-top: 350px" Visible="isVisible" DarkBackground="true" Absolute="true">
+    <NoJS.PDFViewer.PDFViewer Document="@pdf"
+                              DocumentHeight="1000px"
+                              DocumentName="@DocumentName(context)"
+                              DocumentWidth="1500px"/>
+    <MudButton Style="padding-bottom: 50px" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Close" Color="Color.Error" OnClick="@(e => toggleOverlay(false))">Stäng</MudButton>
+</MudOverlay>
 
 @code {
     public MudTable<Tenta> table;
 
-    public byte[] pdf;
+    public byte[] pdf { get; set; }
+
+    public bool isVisible;
 
     // GET
     private async Task<TableData<Tenta>> ServerReload(TableState state)
@@ -47,13 +56,20 @@
         Snackbar.Add("Deleted", Severity.Normal);
     }
 
-    public void GetBytesFromPDF(int Id)
+    public void GetBytesFromPDF(Tenta tenta, bool toggle)
     {
-        Tenta tenta = _context.Tentamen.Where(x => x.Id == Id).FirstOrDefault();
+        _context.Tentamen.Where(x => x.Id == tenta.Id).FirstOrDefault();
         pdf = Convert.FromBase64String(tenta.Data);
+        toggleOverlay(toggle);
     }
 
-    public string DocumentName()
+    public void toggleOverlay(bool toggle)
+    {
+        isVisible = toggle;
+        StateHasChanged();
+    }
+
+    public string DocumentName(Tenta tenta)
     {
         return "tenta.pdf";
     }
