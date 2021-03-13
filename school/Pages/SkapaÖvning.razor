@@ -35,11 +35,12 @@
 </MudContainer>
 
 @code {
+
     Övning övning = new Övning();
 
     IFileListEntry file;
-    public string Data { get; set; }
-    public Byte[] Bdata { get; set; }
+
+    public string StrData { get; set; }
 
     public async void HandleFileSelected(IFileListEntry[] files)
     {
@@ -50,16 +51,30 @@
         StateHasChanged();
     }
 
-    async Task GetFileData()
+    private async Task GetFileData()
     {
-        using (var reader = new System.IO.StreamReader(file.Data))
+
+        using (Stream stream = file.Data)
         {
-            Data = await reader.ReadToEndAsync();
+            var fsSource = stream;
 
+            byte[] bytes = new byte[fsSource.Length];
+            int numBytesToRead = (int)fsSource.Length;
+            int numBytesRead = 0;
 
-            // turn to byte array for database
-            Bdata = Encoding.UTF8.GetBytes(Data);
+            while (numBytesToRead > 0)
+            {
 
+                int n = await stream.ReadAsync(bytes, numBytesRead, numBytesToRead);
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            StrData = Convert.ToBase64String(bytes);
+            fsSource.Close();
         }
     }
 
@@ -70,7 +85,7 @@
         {
             Kursnamn = övning.Kursnamn,
             Ämne = övning.Ämne,
-            Data = Bdata
+            Data = StrData
         };
 
         // this is where we will save to the database
@@ -82,4 +97,5 @@
         NavigationManager.NavigateTo($"/{övning.Kursnamn}");
 
     }
+
 }

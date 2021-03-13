@@ -10,17 +10,45 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Ämne">@context.Ämne</MudTd>
-        <MudTd>Visa</MudTd>
         <MudTd>
-            <MudIconButton OnClick="() => Delete(context)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2"></MudIconButton>
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton OnClick="() => ToggleOverlayDelete(true)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2" />
+            <MudOverlay Visible="isVisibleDelete" DarkBackground="true" Absolute="true">
+                <MudCard Style="width: 200px; height: 200px">
+                    <MudCardContent>
+                        <MudText>Är du säker?</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(e => Delete(context, false))">Ja, ta bort!</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudOverlay>
         </MudTd>
     </RowTemplate>
 </MudTable>
 
+<MudOverlay Style="padding-top: 350px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
+    <NoJS.PDFViewer.PDFViewer Document="@pdf"
+                              DocumentHeight="1000px"
+                              DocumentName="@DocumentName()"
+                              DocumentWidth="1500px" />
+    <MudButton Style="padding-bottom: 50px" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Close" Color="Color.Error" OnClick="@(e => ToggleOverlayPdf(false))"> Stäng </MudButton>
+</MudOverlay>
+
 @code {
+    
     public MudTable<Övning> table;
 
-    // GET
+    public byte[] pdf { get; set; }
+
+    public bool isVisiblePdf;
+
+    public bool isVisibleDelete;
+
+
     private async Task<TableData<Övning>> ServerReload(TableState state)
     {
         var results = await _context.Övningar.Where(x => x.Kursnamn == "ID1019").ToListAsync();
@@ -28,14 +56,40 @@
         return new TableData<Övning>() { Items = results };
     }
 
-    // DELETE
-    private async void Delete(Övning item)
+
+    private async void Delete(Övning item, bool toggle)
     {
         _context.Övningar.Remove(item);
         _context.SaveChanges();
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);
+        ToggleOverlayDelete(toggle);
     }
+
+    public void GetBytesFromPDF(Övning övning, bool toggle)
+    {
+        _context.Övningar.Where(x => x.Id == övning.Id).FirstOrDefault();
+        pdf = Convert.FromBase64String(övning.Data);
+        ToggleOverlayPdf(toggle);
+    }
+
+    public void ToggleOverlayPdf(bool toggle)
+    {
+        isVisiblePdf = toggle;
+        StateHasChanged();
+    }
+
+    public void ToggleOverlayDelete(bool toggle)
+    {
+        isVisibleDelete = toggle;
+        StateHasChanged();
+    }
+
+    public string DocumentName()
+    {
+        return "tenta.pdf";
+    }
+    
 }
 
