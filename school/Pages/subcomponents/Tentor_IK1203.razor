@@ -1,5 +1,6 @@
 @using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
+@inject IJSRuntime _jsRuntime
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
@@ -12,84 +13,118 @@
         <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
         <MudTd>
-            <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context.Id, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
         </MudTd>
         <MudTd>
-            <MudIconButton OnClick="() => ToggleOverlayDelete(true)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2" />
-            <MudOverlay Visible="isVisibleDelete" DarkBackground="true" Absolute="true">
-                <MudCard Style="width: 200px; height: 200px">
-                    <MudCardContent>
-                        <MudText>Är du säker?</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(e => Delete(context, false))">Ja, ta bort!</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudOverlay>
+            <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
         </MudTd>
     </RowTemplate>
 </MudTable>
 
-<MudOverlay Style="padding-top: 350px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
-    <NoJS.PDFViewer.PDFViewer Document="@pdf"
-                              DocumentHeight="1000px"
-                              DocumentName="@DocumentName()"
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Avbryt">
+    <MessageContent>
+        Är du säker?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Ja, Ta bort!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@* PDF *@
+<MudOverlay ZIndex="9999" Style="padding-top: 355px; padding-right: 35px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
+    <NoJS.PDFViewer.PDFViewer Document="@Pdf"
+                              DocumentHeight="940px"
+                              DocumentName="@Pdfpath"
                               DocumentWidth="1500px" />
-    <MudButton Style="padding-bottom: 50px" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Close" Color="Color.Error" OnClick="@(e => ToggleOverlayPdf(false))"> Stäng </MudButton>
+    <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlayPdf(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
 </MudOverlay>
 
 
 @code {
-
     public MudTable<Tenta> table;
 
-    public byte[] pdf { get; set; }
+    [Parameter]
+    public string Pdfpath { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string Kurs { get; set; }
+
+    public byte[] Pdf { get; set; }
 
     public bool isVisiblePdf;
 
-    public bool isVisibleDelete;
+    private MudMessageBox mbox { get; set; }
 
+    private Tenta CurrentTenta { get; set; }
 
+    private string state = "Message box hasn't been opened yet";
+
+    // LOAD DATA FROM DATABASE
     private async Task<TableData<Tenta>> ServerReload(TableState state)
     {
-        var results = await _context.Tentamen.Where(x => x.Kursnamn == "IK1203").ToListAsync();
+        var results = await _context.Tentamen.Where(x => x.Kursnamn == "IK1203").OrderByDescending(x => x.Datum).ToListAsync();
         StateHasChanged();
         return new TableData<Tenta>() { Items = results };
     }
 
-
-    private async void Delete(Tenta item, bool toggle)
+    // DELETE EXAM
+    private async void Delete()
     {
-        _context.Tentamen.Remove(item);
+        _context.Tentamen.Remove(CurrentTenta);
         _context.SaveChanges();
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);
-        ToggleOverlayDelete(toggle);
     }
 
-    public void GetBytesFromPDF(Tenta tenta, bool toggle)
+    // LOAD PDF
+    private async Task GetBytesFromPDF(int id, bool toggle)
     {
-        _context.Tentamen.Where(x => x.Id == tenta.Id).FirstOrDefault();
-        pdf = Convert.FromBase64String(tenta.Data);
-        ToggleOverlayPdf(toggle);
+        Tenta tenta = await _context.Tentamen.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Pdf = Convert.FromBase64String(tenta.Data);
+        if (toggle)
+            ToggleOverlayPdf(toggle);
     }
 
-    public void ToggleOverlayPdf(bool toggle)
+    // OPEN PDF
+    private void ToggleOverlayPdf(bool toggle)
     {
         isVisiblePdf = toggle;
         StateHasChanged();
     }
 
-    public void ToggleOverlayDelete(bool toggle)
+    // OPEN DELETE PROMPT
+    private async void ToggleDeleteBox(Tenta tenta)
     {
-        isVisibleDelete = toggle;
+        CurrentTenta = tenta;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
         StateHasChanged();
     }
 
-    public string DocumentName()
+    protected async void NewTabPdf(int id)
     {
-        return "tenta.pdf";
+        Tenta tenta = await _context.Tentamen.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Id = tenta.Id;
+        Type = "tenta";
+
+        string datum = tenta.Datum.Value.ToShortDateString();
+        datum = datum.Replace("/", "");
+        Pdfpath = datum + tenta.Examinator;
+
+        Kurs = "IK1203";
+
+        OnParametersSet();
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/{Type}/{Pdfpath}/{Id}", "_blank" });
     }
 }
+
+

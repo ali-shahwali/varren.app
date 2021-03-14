@@ -3,9 +3,9 @@
 @using System.Text
 @inject school.Data.ApplicationDbContext _context
 
-
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
-    <EditForm Model="@tenta" OnSubmit="OnValidSubmit">
+    <EditForm Model="@tenta" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
         <MudGrid Spacing="6" Class="mt-16">
             <MudItem xs="7">
                 <MudText Typo="Typo.h5" GutterBottom="true">Skapa tenta</MudText>
@@ -17,7 +17,7 @@
                         </MudSelect>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="string" Label="Examinator" @bind-Value="tenta.Examinator" />
+                        <MudTextField T="string" Label="Examinator" @bind-Value="tenta.Examinator" For="@(() => tenta.Examinator)" />
                     </MudItem>
                     <MudItem xs="12">
                         <MudDatePicker Label="Datum" @bind-Date="tenta.Datum" />
@@ -71,7 +71,7 @@
 
             while (numBytesToRead > 0)
             {
-                
+
                 int n = await stream.ReadAsync(bytes, numBytesRead, numBytesToRead);
                 if (n == 0)
                     break;
@@ -109,4 +109,3 @@
 
     }
 }
-

@@ -1,9 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="DarkTheme"/>
-<MudDialogProvider 
-                   
-                   />
+<MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
@@ -17,13 +15,15 @@
             <MudText Typo="Typo.h6" Class="px-4">Canvas 2.0</MudText>
             <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Kurser</MudText>
             <MudDivider Class="my-2" />
-            <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
-            <MudNavLink Href="/IK1203">IK1203</MudNavLink>
-            <MudNavLink Href="/ID1019">ID1019</MudNavLink>
-            <MudNavGroup Title="Skapa" Expanded="true">
-                <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
-                <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
-            </MudNavGroup>
+            <span style="font-size: 16px!important">
+                <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+                <MudNavLink Href="/IK1203">IK1203</MudNavLink>
+                <MudNavLink Href="/ID1019">ID1019</MudNavLink>
+                <MudNavGroup Title="Skapa" Expanded="true">
+                    <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
+                    <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
+                </MudNavGroup>
+            </span>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -32,12 +32,8 @@
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    bool _drawerOpen = true;
 
     MudTheme DarkTheme = new MudTheme()
     {
@@ -61,9 +57,14 @@
 
         LayoutProperties = new LayoutProperties()
         {
-            DrawerWidthLeft = "260px",
+            DrawerWidthLeft = "300px",
             DrawerWidthRight = "300px"
         }
     };
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 }
 

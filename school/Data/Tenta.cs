@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace school.Data
 {
@@ -9,10 +7,13 @@ namespace school.Data
     {
         public int Id { get; set; }
         public string Kursnamn { get; set; }
-        public DateTime? Datum { get; set; }
-        public string Examinator { get; set; }
-        public string Data { get; set; }
 
-        
+        [Required(ErrorMessage = "Detta fält måste fyllas i.")]
+        public DateTime? Datum { get; set; }
+
+        [Required(ErrorMessage = "Detta fält måste fyllas i.")]
+        public string Examinator { get; set; }
+
+        public string Data { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @inject school.Data.ApplicationDbContext _context
+@inject IJSRuntime _jsRuntime
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Övning>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
@@ -12,41 +13,58 @@
         <MudTd DataLabel="Ämne">@context.Ämne</MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
         </MudTd>
         <MudTd>
-            <MudIconButton OnClick="() => ToggleOverlayDelete(true)" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Class="ma-2" />
-            <MudOverlay Visible="isVisibleDelete" DarkBackground="true" Absolute="true">
-                <MudCard Style="width: 200px; height: 200px">
-                    <MudCardContent>
-                        <MudText>Är du säker?</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(e => Delete(context, false))">Ja, ta bort!</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ToggleOverlayDelete(false)">Nej</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudOverlay>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" OnClick="@(e => ToggleDeleteBox(context))" />
         </MudTd>
     </RowTemplate>
 </MudTable>
 
-<MudOverlay Style="padding-top: 350px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
-    <NoJS.PDFViewer.PDFViewer Document="@pdf"
-                              DocumentHeight="1000px"
-                              DocumentName="@DocumentName()"
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Avbryt">
+    <MessageContent>
+        Är du säker?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Ja, Ta bort!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@* PDF *@
+<MudOverlay ZIndex="9999" Style="padding-top: 355px; padding-right: 35px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
+    <NoJS.PDFViewer.PDFViewer Document="@Pdf"
+                              DocumentHeight="940px"
+                              DocumentName="@Pdfpath"
                               DocumentWidth="1500px" />
-    <MudButton Style="padding-bottom: 50px" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Close" Color="Color.Error" OnClick="@(e => ToggleOverlayPdf(false))"> Stäng </MudButton>
+    <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlayPdf(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
 </MudOverlay>
 
 @code {
+
     public MudTable<Övning> table;
 
-    public byte[] pdf { get; set; }
+    [Parameter]
+    public string Pdfpath { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string Kurs { get; set; }
+
+    public byte[] Pdf { get; set; }
 
     public bool isVisiblePdf;
 
-    public bool isVisibleDelete;
+    private MudMessageBox mbox { get; set; }
 
+    private Övning CurrentÖvning { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
 
     private async Task<TableData<Övning>> ServerReload(TableState state)
     {
@@ -55,21 +73,19 @@
         return new TableData<Övning>() { Items = results };
     }
 
-
-    private async void Delete(Övning item, bool toggle)
+    private async void Delete()
     {
-        _context.Övningar.Remove(item);
+        _context.Övningar.Remove(CurrentÖvning);
         _context.SaveChanges();
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);
-        ToggleOverlayDelete(toggle);
     }
 
-    public void GetBytesFromPDF(Övning övning, bool toggle)
+    public async void GetBytesFromPDF(Övning övning, bool toggle)
     {
-        _context.Övningar.Where(x => x.Id == övning.Id).FirstOrDefault();
-        pdf = Convert.FromBase64String(övning.Data);
+        await _context.Övningar.Where(x => x.Id == övning.Id).FirstOrDefaultAsync();
+        Pdf = Convert.FromBase64String(övning.Data);
         ToggleOverlayPdf(toggle);
     }
 
@@ -79,14 +95,29 @@
         StateHasChanged();
     }
 
-    public void ToggleOverlayDelete(bool toggle)
+    // OPEN DELETE PROMPT
+    private async void ToggleDeleteBox(Övning övning)
     {
-        isVisibleDelete = toggle;
+        CurrentÖvning = övning;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
         StateHasChanged();
     }
 
-    public string DocumentName()
+    protected async void NewTabPdf(int id)
     {
-        return "tenta.pdf";
+        Övning övning = await _context.Övningar.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Id = övning.Id;
+        Type = "ovning";
+
+        string ämne = övning.Ämne;
+        Pdfpath = ämne;
+
+        Kurs = "IK1203";
+
+        OnParametersSet();
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/{Type}/{Pdfpath}/{Id}", "_blank" });
     }
+
 }
+

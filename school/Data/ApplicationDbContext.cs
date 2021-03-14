@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace school.Data
 {
@@ -13,7 +10,11 @@ namespace school.Data
         {
 
         }
+
         public DbSet<Tenta> Tentamen { get; set; }
-        public DbSet<Övning> Övningar {get; set;}
+
+        public DbSet<Övning> Övningar { get; set; }
+
+        public DbSet<Labb> Labbar { get; set; }
     }
 }

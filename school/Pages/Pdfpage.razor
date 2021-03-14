@@ -1,0 +1,39 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject school.Data.ApplicationDbContext _context
+@page "/{Kurs}/{Type}/{Pdfpath}/{Id:int}"
+<NoJS.PDFViewer.PDFViewer Document="@GetPdf(Id)"
+                          DocumentHeight="1000px"
+                          DocumentName="@Pdfpath"
+                          DocumentWidth="1600px" />
+@code {
+
+    [Parameter]
+    public string Pdfpath { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string Kurs { get; set; }
+
+    private byte[] GetPdf(int id)
+    {
+        string data = "";
+
+        if(Type == "tenta")
+        {
+            Tenta tenta = _context.Tentamen.Where(x => x.Id == id).FirstOrDefault();
+            data = tenta.Data;
+        }
+        else if(Type == "ovning")
+        {
+            Övning övning = _context.Övningar.Where(x => x.Id == id).FirstOrDefault();
+            data = övning.Data;
+        }
+        return Convert.FromBase64String(data);
+    }
+
+}
