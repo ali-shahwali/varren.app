@@ -40,7 +40,6 @@
 
     IFileListEntry file;
 
-    public string StrData { get; set; }
 
     public async void HandleFileSelected(IFileListEntry[] files)
     {
@@ -73,7 +72,7 @@
                 numBytesToRead -= n;
             }
 
-            StrData = Convert.ToBase64String(bytes);
+            övning.Data = Convert.ToBase64String(bytes);
             fsSource.Close();
         }
     }
@@ -85,7 +84,7 @@
         {
             Kursnamn = övning.Kursnamn,
             Ämne = övning.Ämne,
-            Data = StrData
+            Data = övning.Data
         };
 
         // this is where we will save to the database

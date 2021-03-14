@@ -1,0 +1,90 @@
+﻿@page "/skapa_kod"
+@inject school.Data.ApplicationDbContext _context
+@inject IDialogService Dialog
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@kod" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid Spacing="6" Class="mt-16">
+            <MudItem xs="7">
+                <MudText Typo="Typo.h5" GutterBottom="true">Skapa tenta</MudText>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudSelect T="string" @bind-Value="kod.Kursnamn" Label="Kursnamn">
+                            <MudSelectItem Value="@("ID1019")"> Programmering 2 </MudSelectItem>
+                            <MudSelectItem Value="@("IK1203")"> Nätverk och Kommunikation </MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Skapare" @bind-Value="kod.Skapare" For="@(() => kod.Skapare)" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudAutocomplete MaxItems="@langs.Length" T="string" Label="Välj språk" @bind-Value="kod.Data" SearchFunc="@Search" />
+                    </MudItem>
+                    <MudItem xs="12" sm="12" md="12">
+                        <MudTextField @bind-Value="kod.Data" T="string" Label="Skriv kod här" Variant="Variant.Text" Lines="5" />
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="6">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+    <MudGrid Spacing="6" Class="mt-16">
+        <MudItem xs="6">
+            <pre>
+                <code>
+                    @kod.Data
+                </code>
+            </pre>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+
+@code {
+
+    Kod kod = new Kod();
+
+    private string[] langs =
+{
+        "Java", "JavaScript", "Python", "C", "C++", "C#", "Elixir", "Erlang", "PHP", "R", "Rust",
+        "Ruby", "Haskell", "Fortran", "F#", "Scala", "Go", "Swift", "MATLAB", "Perl", "Julia",
+        "Assembly", "Pascal", "Prolog"
+    };
+    
+    private async Task<IEnumerable<string>> Search(string value)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return langs;
+        return langs.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    // on valid submit method
+    public void OnValidSubmit(EditContext context)
+    {
+        // build data object
+        kod = new Kod()
+        {
+            Kursnamn = kod.Kursnamn,
+            Skapare = kod.Skapare,
+            Lang = kod.Lang,
+            Data = kod.Data,
+        };
+
+        // this is where we will save to the database
+        _context.Code.Add(kod);
+        _context.SaveChanges();
+
+        StateHasChanged();
+        Snackbar.Add("Fil skapad", Severity.Normal);
+        NavigationManager.NavigateTo($"/{kod.Kursnamn}");
+
+    }
+}

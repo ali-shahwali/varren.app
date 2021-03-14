@@ -16,5 +16,7 @@ namespace school.Data
         public DbSet<Övning> Övningar { get; set; }
 
         public DbSet<Labb> Labbar { get; set; }
+
+        public DbSet<Kod> Code { get; set; }
     }
 }

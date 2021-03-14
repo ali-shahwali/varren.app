@@ -45,8 +45,6 @@
 
     Tenta tenta = new Tenta();
 
-    public string StrData;
-
     IFileListEntry file;
 
     public async void HandleFileSelected(IFileListEntry[] files)
@@ -63,10 +61,9 @@
 
         using (Stream stream = file.Data)
         {
-            var fsSource = stream;
-
-            byte[] bytes = new byte[fsSource.Length];
-            int numBytesToRead = (int)fsSource.Length;
+            
+            byte[] bytes = new byte[stream.Length];
+            int numBytesToRead = (int)stream.Length;
             int numBytesRead = 0;
 
             while (numBytesToRead > 0)
@@ -80,11 +77,9 @@
                 numBytesToRead -= n;
             }
 
-            StrData = Convert.ToBase64String(bytes);
-            fsSource.Close();
+            tenta.Data = Convert.ToBase64String(bytes);
+            stream.Close();
         }
-
-
     }
 
     // on valid submit method
@@ -96,7 +91,7 @@
             Kursnamn = tenta.Kursnamn,
             Datum = tenta.Datum,
             Examinator = tenta.Examinator,
-            Data = StrData,
+            Data = tenta.Data,
         };
 
         // this is where we will save to the database
