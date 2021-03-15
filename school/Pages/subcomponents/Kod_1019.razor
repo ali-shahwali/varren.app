@@ -1,0 +1,103 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject school.Data.ApplicationDbContext _context
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Kod>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Syfte</MudTh>
+        <MudTh>Skapare</MudTh>
+        <MudTh>Språk</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Syfte">@context.Syfte</MudTd>
+        <MudTd DataLabel="Skapare">@context.Skapare</MudTd>
+        <MudTd DataLabel="Språk">@context.Lang</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(e => OpenCodeOverlay(context.Id, true))" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudOverlay ZIndex="9999" Visible="isVisibleCode" DarkBackground="true" Absolute="true">
+    <MudPaper Class="pa-16 ma-2" Outlined="true" Square="true">
+        <pre spellcheck="false">
+            <code class="language-java">
+                @Code
+            </code>
+        </pre>
+    </MudPaper>
+    <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlay(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
+</MudOverlay>
+
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Varning" CancelText="Avbryt">
+    <MessageContent>
+        Är du säker?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Ja, Ta bort!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@code {
+    public MudTable<Kod> table;
+
+    private Kod CurrentKod { get; set; }
+
+    private MudMessageBox mbox { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
+
+    public bool isVisibleCode;
+
+    string Code { get; set; }
+
+    string lang { get; set; }
+
+    // LOAD DATA FROM DATABASE
+    private async Task<TableData<Kod>> ServerReload(TableState state)
+    {
+        var results = await _context.Code.Where(x => x.Kursnamn == "ID1019").OrderByDescending(x => x.Lang).ToListAsync();
+        StateHasChanged();
+        return new TableData<Kod>() { Items = results };
+    }
+
+    // DELETE EXAM
+    private async void Delete()
+    {
+        _context.Code.Remove(CurrentKod);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
+    }
+
+    // OPEN DELETE PROMPT
+    private async void ToggleDeleteBox(Kod kod)
+    {
+        CurrentKod = kod;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
+
+    // LOAD PDF
+    private async Task OpenCodeOverlay(int id, bool toggle)
+    {
+        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Code = kod.Data;
+        lang = kod.Lang;
+        if (toggle)
+            ToggleOverlay(toggle);
+    }
+
+    // OPEN PDF
+    private void ToggleOverlay(bool toggle)
+    {
+        isVisibleCode = toggle;
+        StateHasChanged();
+    }
+}

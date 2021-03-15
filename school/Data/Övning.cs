@@ -9,6 +9,7 @@ namespace school.Data
 
         [Required(ErrorMessage = "Detta fält måste fyllas i.")]
         public string Ämne { get; set; }
+
         public string Data { get; set; }
     }
 }
