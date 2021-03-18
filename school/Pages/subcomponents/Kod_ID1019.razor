@@ -1,5 +1,7 @@
 ﻿@using Microsoft.EntityFrameworkCore
+@inject IJSRuntime _jsRuntime
 @inject school.Data.ApplicationDbContext _context
+
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Kod>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Syfte</MudTh>
@@ -13,7 +15,7 @@
         <MudTd DataLabel="Skapare">@context.Skapare</MudTd>
         <MudTd DataLabel="Språk">@context.Lang</MudTd>
         <MudTd>
-            <MudIconButton OnClick="@(e => OpenCodeOverlay(context.Id, true))" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
+            <MudIconButton OnClick="@(e => OpenCodeOverlay(context.Id))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
         </MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
@@ -22,9 +24,9 @@
 </MudTable>
 
 <MudOverlay ZIndex="9999" Visible="isVisibleCode" DarkBackground="true" Absolute="true">
-    <MudPaper Class="pa-16 ma-2" Outlined="true" Square="true">
-        <pre spellcheck="false">
-            <code class="language-java">
+    <MudPaper Style="overflow-y: auto; height: 100vh" Class="pa-16 ma-2" Outlined="true" Square="true">
+        <pre style="overflow-y: auto; height: 100vh" spellcheck="false">
+            <code style="overflow-y: auto; height: 100vh" class="language-java">
                 @Code
             </code>
         </pre>
@@ -45,7 +47,7 @@
 @code {
     public MudTable<Kod> table;
 
-    private Kod CurrentKod { get; set; }
+    private Kod CurrentKod;
 
     private MudMessageBox mbox { get; set; }
 
@@ -53,9 +55,7 @@
 
     public bool isVisibleCode;
 
-    string Code { get; set; }
-
-    string lang { get; set; }
+    private string Code;
 
     // LOAD DATA FROM DATABASE
     private async Task<TableData<Kod>> ServerReload(TableState state)
@@ -84,17 +84,13 @@
         StateHasChanged();
     }
 
-    // LOAD PDF
-    private async Task OpenCodeOverlay(int id, bool toggle)
+    private async Task OpenCodeOverlay(int id)
     {
         Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
         Code = kod.Data;
-        lang = kod.Lang;
-        if (toggle)
-            ToggleOverlay(toggle);
+        ToggleOverlay(true);
     }
 
-    // OPEN PDF
     private void ToggleOverlay(bool toggle)
     {
         isVisibleCode = toggle;
