@@ -2,6 +2,10 @@
 @inject school.Data.ApplicationDbContext _context
 @inject IJSRuntime _jsRuntime
 
+@if (table == null)
+{
+<MudProgressLinear Color="Color.Secondary" Indeterminate="true"/>
+}
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Datum</MudTh>
@@ -10,16 +14,16 @@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-            <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
-            <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
-            <MudTd>
-                <MudIconButton OnClick="@(e => GetBytesFromPDF(context.Id, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
-                <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
-            </MudTd>
-            <MudTd>
-                <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-            </MudTd>
-    </RowTemplate>  
+        <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context.Id, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+        </MudTd>
+    </RowTemplate>
 </MudTable>
 
 @* DELETE PROMPT *@
@@ -35,9 +39,9 @@
 @* PDF *@
 <MudOverlay ZIndex="9999" Style="padding-top: 355px; padding-right: 35px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
     <NoJS.PDFViewer.PDFViewer Document="@Pdf"
-                                DocumentHeight="940px"
-                                DocumentName="@Pdfpath"
-                                DocumentWidth="1500px" />
+                              DocumentHeight="940px"
+                              DocumentName="@Pdfpath"
+                              DocumentWidth="1500px" />
     <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlayPdf(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
 </MudOverlay>
 

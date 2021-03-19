@@ -9,6 +9,18 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudAppBarSpacer />
         <MudIconButton Target="top" Link="https://github.com/ali-shahwali/schoolOrganizer-blazor" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" />
+        <MudMenu Class="ml-5" Direction="Direction.Right" OffsetY="true">
+            <ActivatorContent>
+                <MudAvatar Color="Color.Dark">
+                    <MudIcon Icon="@Icons.Material.Filled.MoreVert" />
+                </MudAvatar>
+            </ActivatorContent>
+            <ChildContent>
+                <form method="post" action="Identity/Account/LogOut">
+                    <button type="submit"><MudMenuItem>Log out</MudMenuItem></button>
+                </form>
+            </ChildContent>
+        </MudMenu>
     </MudAppBar>
     <MudDrawer Width="300px" @bind-Open="_drawerOpen" Elevation="2">
         <MudNavMenu>
@@ -66,6 +78,19 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    // NOT AUTH Redirect to login
+    [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var user = (await AuthStat).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("Identity/Account/Login");
+        }
     }
 }
 

@@ -2,6 +2,10 @@
 @inject IJSRuntime _jsRuntime
 @inject school.Data.ApplicationDbContext _context
 
+@if (table == null)
+{
+    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+}
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Kod>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Syfte</MudTh>
@@ -47,10 +51,10 @@
     private string Code;
 
     [Parameter]
-    public int Id {get;set;}
+    public int Id { get; set; }
 
     [Parameter]
-    public string Kurs{ get; set; }
+    public string Kurs { get; set; }
 
     // LOAD DATA FROM DATABASE
     private async Task<TableData<Kod>> ServerReload(TableState state)
