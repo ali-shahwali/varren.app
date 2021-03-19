@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\EFSQLScripts\school.Data.ApplicationDbContext.sql" />
+</sitemanifest>
