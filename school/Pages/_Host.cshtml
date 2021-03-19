@@ -43,13 +43,13 @@
     <script>
         function renderEditor() {
             var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/tomorrow_night");
+            editor.setTheme("ace/theme/dracula");
             editor.session.setMode("ace/mode/csharp");
         }
 
         function renderViewer(data) {
             var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/tomorrow_night");
+            editor.setTheme("ace/theme/dracula");
             editor.session.setMode("ace/mode/csharp");
             editor.setValue(data);
             editor.setReadOnly(true);

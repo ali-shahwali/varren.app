@@ -14,21 +14,21 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 2 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Areas\Identity\Pages\_ViewImports.cshtml"
-using varren.Areas.Identity;
+using school.Areas.Identity;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Areas\Identity\Pages\_ViewImports.cshtml"
-using varren.Areas.Identity.Pages;
+using school.Areas.Identity.Pages;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Areas\Identity\Pages\Account\_ViewImports.cshtml"
-using varren.Areas.Identity.Pages.Account;
+using school.Areas.Identity.Pages.Account;
 
 #line default
 #line hidden
@@ -48,8 +48,8 @@ using Microsoft.AspNetCore.Identity;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"580e87faa4f26b07c32280b4a4a19c3f61b16786", @"/Areas/Identity/Pages/Account/LogOut.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"5fb262c42b49d01a7652a319d760f5284c6bd57f", @"/Areas/Identity/Pages/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"5caf228bd921ec37cee6c0d9922b43d7e01a3337", @"/Areas/Identity/Pages/Account/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"36efb6fa01b0edd44f2eb26a61c7f668aef78984", @"/Areas/Identity/Pages/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"99b7542ab73e4c4e9362b16627282a548dd6ec56", @"/Areas/Identity/Pages/Account/_ViewImports.cshtml")]
     public class Areas_Identity_Pages_Account_LogOut : global::Microsoft.AspNetCore.Mvc.RazorPages.Page
     {
         #pragma warning disable 1998
