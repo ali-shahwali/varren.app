@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace school.Migrations
+namespace varren.Migrations
 {
     public partial class Modell10 : Migration
     {

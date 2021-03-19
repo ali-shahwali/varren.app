@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace school.Migrations
+namespace varren.Migrations
 {
     public partial class Tentamodell5 : Migration
     {

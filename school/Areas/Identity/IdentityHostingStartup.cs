@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using school.Data;
+using varren.Data;
 
-[assembly: HostingStartup(typeof(school.Areas.Identity.IdentityHostingStartup))]
-namespace school.Areas.Identity
+[assembly: HostingStartup(typeof(varren.Areas.Identity.IdentityHostingStartup))]
+namespace varren.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

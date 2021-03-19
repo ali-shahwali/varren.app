@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace school.Data
+namespace varren.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

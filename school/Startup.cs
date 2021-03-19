@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
-using school.Areas.Identity;
-using school.Data;
+using varren.Areas.Identity;
+using varren.Data;
 
 
-namespace school
+namespace varren
 {
     public class Startup
     {

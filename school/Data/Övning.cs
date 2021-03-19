@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace school.Data
+namespace varren.Data
 {
     public class Övning
     {

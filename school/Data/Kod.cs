@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace school.Data
+namespace varren.Data
 {
     public class Kod
     {

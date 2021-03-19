@@ -1,7 +1,7 @@
 ﻿@page "/skapa_tenta"
 @using System.IO
 @using System.Text
-@inject school.Data.ApplicationDbContext _context
+@inject varren.Data.ApplicationDbContext _context
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <EditForm Model="@tenta" OnValidSubmit="OnValidSubmit">
