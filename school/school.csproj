@@ -20,4 +20,8 @@
     <PackageReference Include="NoJS.PDFViewer" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>
