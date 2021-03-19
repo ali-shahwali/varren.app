@@ -13,112 +13,112 @@ namespace school.Pages.subcomponents
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "c:\varren.app\school\_Imports.razor"
+#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "c:\varren.app\school\_Imports.razor"
+#line 2 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "c:\varren.app\school\_Imports.razor"
+#line 3 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "c:\varren.app\school\_Imports.razor"
+#line 4 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "c:\varren.app\school\_Imports.razor"
+#line 5 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "c:\varren.app\school\_Imports.razor"
+#line 6 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "c:\varren.app\school\_Imports.razor"
+#line 7 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "c:\varren.app\school\_Imports.razor"
+#line 8 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "c:\varren.app\school\_Imports.razor"
+#line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using school;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "c:\varren.app\school\_Imports.razor"
+#line 10 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using school.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 11 "c:\varren.app\school\_Imports.razor"
+#line 11 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using MudBlazor;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 12 "c:\varren.app\school\_Imports.razor"
+#line 12 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using school.Pages;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 13 "c:\varren.app\school\_Imports.razor"
+#line 13 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using BlazorInputFile;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 14 "c:\varren.app\school\_Imports.razor"
+#line 14 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using school.Pages.subcomponents;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 15 "c:\varren.app\school\_Imports.razor"
+#line 15 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
 using school.Data;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 1 "c:\varren.app\school\Pages\subcomponents\Tentor_ID1019.razor"
+#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Tentor_ID1019.razor"
 using Microsoft.EntityFrameworkCore;
 
 #line default
@@ -132,7 +132,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 49 "c:\varren.app\school\Pages\subcomponents\Tentor_ID1019.razor"
+#line 49 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Tentor_ID1019.razor"
        
     public MudTable<Tenta> table;
 
