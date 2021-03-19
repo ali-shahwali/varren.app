@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "varren": {
+    "school": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

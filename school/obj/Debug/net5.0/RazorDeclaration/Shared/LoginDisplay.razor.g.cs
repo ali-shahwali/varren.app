@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace varren.Shared
+namespace school.Shared
 {
     #line hidden
     using System;
@@ -70,14 +70,14 @@ using Microsoft.JSInterop;
 #nullable disable
 #nullable restore
 #line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
-using varren;
+using school;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 10 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
-using varren.Shared;
+using school.Shared;
 
 #line default
 #line hidden
@@ -91,7 +91,7 @@ using MudBlazor;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
-using varren.Pages;
+using school.Pages;
 
 #line default
 #line hidden
@@ -105,14 +105,14 @@ using BlazorInputFile;
 #nullable disable
 #nullable restore
 #line 14 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
-using varren.Pages.subcomponents;
+using school.Pages.subcomponents;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 15 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\_Imports.razor"
-using varren.Data;
+using school.Data;
 
 #line default
 #line hidden

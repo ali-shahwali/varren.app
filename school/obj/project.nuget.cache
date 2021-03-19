@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qaNljXHDjPjrNyk0RGzaTM46At7D4HtSM+cCo6wwfpleNe1FDMGA/XN9/HTN3KsIcEE2bcO1Yd+veJ+i0xWg6Q==",
+  "dgSpecHash": "qDYEei3+4Ps20lw6IEqFlx7YF7VbY54tWCimFB9b0Do7VySE3I/Y/pAHxhyGI2mP3zpVd+SkOGCZlzrtyvxYWQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\varren.csproj",
+  "projectFilePath": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\school.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ali_z\\.nuget\\packages\\blazorinputfile\\0.2.0\\blazorinputfile.0.2.0.nupkg.sha512",
     "C:\\Users\\ali_z\\.nuget\\packages\\bouncycastle\\1.8.6.1\\bouncycastle.1.8.6.1.nupkg.sha512",

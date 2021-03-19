@@ -1,5 +1,5 @@
 ﻿@using Microsoft.EntityFrameworkCore
-@inject varren.Data.ApplicationDbContext _context
+@inject school.Data.ApplicationDbContext _context
 @page "/{Kurs}/{Type}/{Pdfpath}/{Id:int}"
 <NoJS.PDFViewer.PDFViewer Document="@GetPdf(Id)"
                           DocumentHeight="1000px"

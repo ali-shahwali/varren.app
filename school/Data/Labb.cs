@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace varren.Data
+namespace school.Data
 {
     public class Labb
     {

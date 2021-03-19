@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using varren.Data;
+using school.Data;
 
-namespace varren.Migrations
+namespace school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210314093608_Modell10")]
@@ -221,7 +221,7 @@ namespace varren.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("varren.Data.Kod", b =>
+            modelBuilder.Entity("school.Data.Kod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,7 +245,7 @@ namespace varren.Migrations
                     b.ToTable("Code");
                 });
 
-            modelBuilder.Entity("varren.Data.Labb", b =>
+            modelBuilder.Entity("school.Data.Labb", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -267,7 +267,7 @@ namespace varren.Migrations
                     b.ToTable("Labbar");
                 });
 
-            modelBuilder.Entity("varren.Data.Tenta", b =>
+            modelBuilder.Entity("school.Data.Tenta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -293,7 +293,7 @@ namespace varren.Migrations
                     b.ToTable("Tentamen");
                 });
 
-            modelBuilder.Entity("varren.Data.Övning", b =>
+            modelBuilder.Entity("school.Data.Övning", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -8423,9 +8423,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\varren.csproj",
-      "projectName": "varren",
-      "projectPath": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\varren.csproj",
+      "projectUniqueName": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\school.csproj",
+      "projectName": "school",
+      "projectPath": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\school.csproj",
       "packagesPath": "C:\\Users\\ali_z\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\ali_z\\source\\repos\\ali-shahwali\\school-blazor\\school\\obj\\",
       "projectStyle": "PackageReference",

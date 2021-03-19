@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace varren.Migrations
+namespace school.Migrations
 {
     public partial class Modell8 : Migration
     {

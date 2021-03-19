@@ -1,9 +1,6 @@
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\school.exe
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\wwwroot\css\site.css
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\wwwroot\favicon.ico
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\wwwroot\js\ace.js
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\wwwroot\js\mode-csharp.js
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\wwwroot\js\theme-tomorrow_night.js
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\appsettings.Development.json
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\appsettings.json
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\PubTmp\Out\school.dll
