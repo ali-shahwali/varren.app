@@ -363,3 +363,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/school/wwwroot/js/mode-csharp.js
+/school/wwwroot/js/theme-tomorrow_night.js
