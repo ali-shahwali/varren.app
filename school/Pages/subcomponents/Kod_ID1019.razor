@@ -15,7 +15,7 @@
         <MudTd DataLabel="Skapare">@context.Skapare</MudTd>
         <MudTd DataLabel="Språk">@context.Lang</MudTd>
         <MudTd>
-            <MudIconButton OnClick="@(e => OpenCodeOverlay(context.Id))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
+            <MudIconButton OnClick="@(e => OpenNewTab(context.Id))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
         </MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
@@ -23,16 +23,7 @@
     </RowTemplate>
 </MudTable>
 
-<MudOverlay ZIndex="9999" Visible="isVisibleCode" DarkBackground="true" Absolute="true">
-    <MudPaper Style="overflow-y: auto; height: 100vh" Class="pa-16 ma-2" Outlined="true" Square="true">
-        <pre style="overflow-y: auto; height: 100vh" spellcheck="false">
-            <code style="overflow-y: auto; height: 100vh" class="language-java">
-                @Code
-            </code>
-        </pre>
-    </MudPaper>
-    <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlay(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
-</MudOverlay>
+
 
 @* DELETE PROMPT *@
 <MudMessageBox @ref="mbox" Title="Varning" CancelText="Avbryt">
@@ -53,9 +44,13 @@
 
     private string state = "Message box hasn't been opened yet";
 
-    public bool isVisibleCode;
-
     private string Code;
+
+    [Parameter]
+    public int Id {get;set;}
+
+    [Parameter]
+    public string Kurs{ get; set; }
 
     // LOAD DATA FROM DATABASE
     private async Task<TableData<Kod>> ServerReload(TableState state)
@@ -84,16 +79,12 @@
         StateHasChanged();
     }
 
-    private async Task OpenCodeOverlay(int id)
+    private async Task OpenNewTab(int id)
     {
         Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
-        Code = kod.Data;
-        ToggleOverlay(true);
+        Kurs = kod.Kursnamn;
+        Id = id;
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/{Id}/", "_blank" });
     }
 
-    private void ToggleOverlay(bool toggle)
-    {
-        isVisibleCode = toggle;
-        StateHasChanged();
-    }
 }

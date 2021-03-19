@@ -1,0 +1,29 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject school.Data.ApplicationDbContext _context
+@inject IJSRuntime _jsRuntime
+
+@page "/{Kurs}/{Id:int}"
+
+<div class="viewer" id="editor"></div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Kurs { get; set; }
+
+    public string data { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Kod kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        data = kod.Data;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("renderViewer", data);
+    }
+
+}

@@ -3,10 +3,10 @@
 @inject IJSRuntime _jsRuntime
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Large">
-    <EditForm Model="@kod" OnValidSubmit="OnValidSubmit">
+    <EditForm Model="@kod" OnSubmit="OnSubmit">
         <DataAnnotationsValidator />
         <MudGrid Spacing="6" Class="mt-16">
-            <MudItem xs="6">
+            <MudItem xs="3">
                 <MudText Typo="Typo.h5" GutterBottom="true">Skapa tenta</MudText>
                 <MudGrid>
                     <MudItem xs="12">
@@ -24,21 +24,17 @@
                     <MudItem xs="12">
                         <MudAutocomplete MaxItems="@langs.Length" T="string" Label="Välj språk" @bind-Value="kod.Lang" SearchFunc="@Search" />
                     </MudItem>
-                    <MudItem xs="12">
-                        <MudTextField spellcheck="false" Style="font-family: Courier New, Courier, monospace" Immediate="true" @bind-Value="kod.Data" Label="Skriv kod här!" Lines="10" Variant="Variant.Filled"></MudTextField>
-                    </MudItem>
+                    
                     <MudItem Class="d-flex justify-end" xs="6">
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
                     </MudItem>
                 </MudGrid>
             </MudItem>
-            <MudItem xs="6">
+            <MudItem xs="9">
                 <MudText>@kod.Lang</MudText>
-                <pre spellcheck="false">
-                    <code class="language-java">
-                        @kod.Data
-                    </code>
-                </pre>
+                <MudItem xs="12">
+                    <div id="editor"></div>
+                </MudItem>
             </MudItem>
         </MudGrid>
     </EditForm>
@@ -72,8 +68,10 @@
     }
 
     // on valid submit method
-    public void OnValidSubmit(EditContext context)
+    public async Task OnSubmit(EditContext context)
     {
+        kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+
         // build data object
         kod = new Kod()
         {
@@ -92,6 +90,12 @@
         Snackbar.Add("Fil skapad", Severity.Normal);
         NavigationManager.NavigateTo($"/{kod.Kursnamn}");
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("renderEditor");
+    }
+
 }
 
 

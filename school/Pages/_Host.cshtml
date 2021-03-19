@@ -17,7 +17,6 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="school.styles.css" rel="stylesheet" />
     <link href="_content/Syncfusion.Blazor/styles/bootstrap4.css" rel="stylesheet" />
-    <link href="~/css/prism.css" rel="stylesheet" />
 </head>
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
@@ -41,7 +40,27 @@
             window.open(args);
         };
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-java.min.js" integrity="sha512-BEknrL2CnuVpqnSTwO4a9y9uW5bQ/nabkJeahZ5seRXvmzAMq59Ja9OxZe3lVGrnKEcVlamL4nUBl03wzPM/nA==" crossorigin="anonymous"></script>
+    <script src="~/js/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        function renderEditor() {
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/tomorrow_night");
+            editor.session.setMode("ace/mode/csharp");
+        }
+
+        function renderViewer(data) {
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/tomorrow_night");
+            editor.session.setMode("ace/mode/csharp");
+            editor.setValue(data);
+            editor.setReadOnly(true);
+        }
+
+        function getEditorData() {
+            var editor = ace.edit("editor");
+            var data = editor.getValue();
+            return data;
+        }
+    </script>
 </body>
 </html>
