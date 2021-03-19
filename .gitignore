@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-school/wwwroot/js
+school/wwwroot/js/ace.js
 
 # User-specific files
 *.rsuser
