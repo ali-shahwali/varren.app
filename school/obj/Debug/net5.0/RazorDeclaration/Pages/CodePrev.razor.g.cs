@@ -133,7 +133,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
+#line 18 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
        
     [Parameter]
     public int Id { get; set; }
@@ -143,9 +143,15 @@ using Microsoft.EntityFrameworkCore;
 
     public Kod kod { get; set; }
 
+    public string Code;
+
+    public string lang;
+
     protected override async Task OnInitializedAsync()
     {
         kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        Code = kod.Data;
+        lang = kod.Lang;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

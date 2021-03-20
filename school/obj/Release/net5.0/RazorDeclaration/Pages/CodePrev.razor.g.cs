@@ -124,7 +124,7 @@ using Microsoft.EntityFrameworkCore;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/{Id:int}")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/view/{Id:int}")]
     public partial class CodePrev : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -141,17 +141,17 @@ using Microsoft.EntityFrameworkCore;
     [Parameter]
     public string Kurs { get; set; }
 
-    public string data { get; set; }
+    public Kod kod { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Kod kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
-        data = kod.Data;
+        kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _jsRuntime.InvokeVoidAsync("renderViewer", data);
+        await _jsRuntime.InvokeVoidAsync("renderViewer", kod.Data);
+        await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
     }
 
 

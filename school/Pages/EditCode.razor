@@ -4,9 +4,18 @@
 
 @page "/{Kurs}/edit/{Id:int}"
 
-<div class="viewerEditor" id="editor"></div>
-<MudIconButton Color="Color.Success" Style="position: fixed; right: 3px; top: 60px" Icon="@Icons.Material.Filled.Save" OnClick="Save"/>
 
+<MudIconButton  Class="ml-2" Color="Color.Success" Style="position: fixed; right: 1px; top: 60px" Icon="@Icons.Material.Filled.Save" OnClick="Save" />
+@if (lang == "html")
+{
+    <div class="viewerEditorHtml" id="editor"></div>
+    @((MarkupString)Code)
+    <MudIconButton Class="ml-2" Color="Color.Success" Style="position: fixed; right: 1px; top: 120px" Icon="@Icons.Material.Filled.PlayCircleOutline" OnClick="Preview" />
+}
+else
+{
+    <div class="viewerEditor" id="editor"></div>
+}
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -16,9 +25,15 @@
 
     public Kod kod { get; set; }
 
+    public string Code;
+
+    public string lang;
+
     protected override async Task OnInitializedAsync()
     {
         kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        Code = kod.Data;
+        lang = kod.Lang;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -30,11 +45,21 @@
     public async Task Save()
     {
         kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+        Code = kod.Data;
+        if (kod.Lang.Equals("html"))
+            await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", Code);
 
         _context.Update(kod);
         _context.SaveChanges();
         StateHasChanged();
         Snackbar.Add("Sparad", Severity.Normal);
+    }
+
+    public async Task Preview()
+    {
+        kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+        Code = kod.Data;
+        await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", Code);
     }
 
 }

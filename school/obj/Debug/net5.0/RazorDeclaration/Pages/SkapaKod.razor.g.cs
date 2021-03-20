@@ -141,9 +141,6 @@ using school.Data;
 
     private async Task<IEnumerable<string>> Search(string value)
     {
-        // In real life use an asynchronous function for fetching data from an api.
-        await Task.Delay(5);
-
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
             return langs;

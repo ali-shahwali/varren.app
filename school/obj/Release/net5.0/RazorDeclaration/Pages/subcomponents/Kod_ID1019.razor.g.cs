@@ -132,7 +132,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 42 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Kod_ID1019.razor"
+#line 43 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Kod_ID1019.razor"
        
     public MudTable<Kod> table;
 
@@ -177,12 +177,20 @@ using Microsoft.EntityFrameworkCore;
         StateHasChanged();
     }
 
-    private async Task OpenNewTab(int id)
+    private async Task ViewNewTab(int id)
     {
         Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
         Kurs = kod.Kursnamn;
         Id = id;
-        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/{Id}/", "_blank" });
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/view/{Id}/", "_blank" });
+    }
+
+    private async Task EditNewTab(int id)
+    {
+        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Kurs = kod.Kursnamn;
+        Id = id;
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/edit/{Id}/", "_blank" });
     }
 
 

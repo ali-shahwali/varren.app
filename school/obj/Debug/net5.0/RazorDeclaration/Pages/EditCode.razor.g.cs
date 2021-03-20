@@ -133,7 +133,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 10 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\EditCode.razor"
+#line 19 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\EditCode.razor"
        
     [Parameter]
     public int Id { get; set; }
@@ -143,9 +143,15 @@ using Microsoft.EntityFrameworkCore;
 
     public Kod kod { get; set; }
 
+    public string Code;
+
+    public string lang;
+
     protected override async Task OnInitializedAsync()
     {
         kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        Code = kod.Data;
+        lang = kod.Lang;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -157,11 +163,21 @@ using Microsoft.EntityFrameworkCore;
     public async Task Save()
     {
         kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+        Code = kod.Data;
+        if (kod.Lang.Equals("html"))
+            await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", Code);
 
         _context.Update(kod);
         _context.SaveChanges();
         StateHasChanged();
         Snackbar.Add("Sparad", Severity.Normal);
+    }
+
+    public async Task Preview()
+    {
+        kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+        Code = kod.Data;
+        await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", Code);
     }
 
 

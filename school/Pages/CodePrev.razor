@@ -4,7 +4,16 @@
 
 @page "/{Kurs}/view/{Id:int}"
 
-<div class="viewer" id="editor"></div>
+
+@if (lang == "html")
+{
+    <div class="viewerHtml" id="editor"></div>
+    @((MarkupString)Code)
+}
+else
+{
+    <div class="viewer" id="editor"></div>
+}
 
 @code {
     [Parameter]
@@ -15,9 +24,15 @@
 
     public Kod kod { get; set; }
 
+    public string Code;
+
+    public string lang;
+
     protected override async Task OnInitializedAsync()
     {
         kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        Code = kod.Data;
+        lang = kod.Lang;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

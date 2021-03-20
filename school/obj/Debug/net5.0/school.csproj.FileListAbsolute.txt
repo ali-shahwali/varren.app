@@ -126,8 +126,6 @@ C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\R
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\subcomponents\Övningar_IK1203.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\subcomponents\Övningar_IK1203.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\NoJS.PDFViewer.dll
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\BouncyCastle.Crypto.dll
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\itextsharp.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\Pdfpage.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\Pdfpage.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\SkapaKod.razor.g.cs
@@ -230,3 +228,9 @@ C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\R
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\subcomponents\Kod_IK1203.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\EditCode.razor.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\EditCode.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.Azure.Services.AppAuthentication.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Debug\net5.0\Microsoft.Rest.ClientRuntime.dll

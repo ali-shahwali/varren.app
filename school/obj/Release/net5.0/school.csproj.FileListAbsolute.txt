@@ -11,11 +11,9 @@ C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\school.Views.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\school.Views.pdb
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\BlazorInputFile.dll
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\BouncyCastle.Crypto.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\EntityFramework.SqlServer.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\EntityFramework.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Humanizer.dll
-C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\itextsharp.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Authorization.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Components.dll
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Components.Forms.dll
@@ -224,3 +222,15 @@ C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\_ViewImports.cshtml.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\_ViewStart.cshtml.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.Azure.Services.AppAuthentication.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\bin\Release\net5.0\Microsoft.Rest.ClientRuntime.dll
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\RazorDeclaration\Pages\EditCode.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\RazorDeclaration\Pages\II1305.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\RazorDeclaration\Pages\subcomponents\Kod_IK1203.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\EditCode.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\II1305.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Release\net5.0\Razor\Pages\subcomponents\Kod_IK1203.razor.g.cs
