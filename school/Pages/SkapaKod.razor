@@ -22,9 +22,8 @@
                         <MudTextField T="string" Label="Syfte" @bind-Value="kod.Syfte" For="@(() => kod.Syfte)" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudAutocomplete MaxItems="@langs.Length" T="string" Label="Välj språk" @bind-Value="kod.Lang" SearchFunc="@Search" />
+                        <MudAutocomplete ValueChanged="@((string s) => Refresh(s))" Value="@kod.Lang" MaxItems="@langs.Length" T="string" Label="Välj språk" SearchFunc="@Search" />
                     </MudItem>
-                    
                     <MudItem Class="d-flex justify-end" xs="6">
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
                     </MudItem>
@@ -44,16 +43,15 @@
 
 
 @code {
-
     Kod kod = new Kod();
 
     string codeData;
 
     private string[] langs =
 {
-        "Java", "JavaScript", "Python", "C", "C++", "C#", "Elixir", "Erlang", "PHP", "R", "Rust",
-        "Ruby", "Haskell", "Fortran", "F#", "Scala", "Go", "Swift", "MATLAB", "Perl", "Julia",
-        "Assembly", "Pascal", "Prolog"
+        "java", "javascript", "python", "C", "C++", "csharp", "elixir", "erlang", "PHP", "R", "Rust",
+        "Ruby", "Haskell", "fortran", "F#", "Scala", "golang", "Swift", "matlab", "Perl", "julia",
+        "Assembly", "Pascal", "prolog", "html", "razor", "css"
     };
 
     private async Task<IEnumerable<string>> Search(string value)
@@ -96,6 +94,11 @@
         await _jsRuntime.InvokeVoidAsync("renderEditor");
     }
 
+    private async Task Refresh(string lang)
+    {
+        kod.Lang = lang;
+        await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
+    }
 }
 
 

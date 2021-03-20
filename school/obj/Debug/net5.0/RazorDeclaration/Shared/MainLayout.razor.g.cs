@@ -125,7 +125,7 @@ using school.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 47 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Shared\MainLayout.razor"
+#line 48 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Shared\MainLayout.razor"
        
 
     bool _drawerOpen = true;

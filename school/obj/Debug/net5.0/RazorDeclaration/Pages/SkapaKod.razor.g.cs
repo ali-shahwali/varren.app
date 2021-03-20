@@ -126,18 +126,17 @@ using school.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 46 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\SkapaKod.razor"
+#line 45 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\SkapaKod.razor"
        
-
     Kod kod = new Kod();
 
     string codeData;
 
     private string[] langs =
 {
-        "Java", "JavaScript", "Python", "C", "C++", "C#", "Elixir", "Erlang", "PHP", "R", "Rust",
-        "Ruby", "Haskell", "Fortran", "F#", "Scala", "Go", "Swift", "MATLAB", "Perl", "Julia",
-        "Assembly", "Pascal", "Prolog"
+        "java", "javascript", "python", "C", "C++", "csharp", "elixir", "erlang", "PHP", "R", "Rust",
+        "Ruby", "Haskell", "fortran", "F#", "Scala", "golang", "Swift", "matlab", "Perl", "julia",
+        "Assembly", "Pascal", "prolog", "html", "razor", "css"
     };
 
     private async Task<IEnumerable<string>> Search(string value)
@@ -180,6 +179,11 @@ using school.Data;
         await _jsRuntime.InvokeVoidAsync("renderEditor");
     }
 
+    private async Task Refresh(string lang)
+    {
+        kod.Lang = lang;
+        await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
+    }
 
 #line default
 #line hidden

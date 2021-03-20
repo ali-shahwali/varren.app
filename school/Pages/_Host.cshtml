@@ -44,15 +44,25 @@
         function renderEditor() {
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/dracula");
-            editor.session.setMode("ace/mode/csharp");
+        }
+
+        function renderPreloadEditor(data) {
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/dracula");
+            editor.setValue(data);
         }
 
         function renderViewer(data) {
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/dracula");
-            editor.session.setMode("ace/mode/csharp");
             editor.setValue(data);
             editor.setReadOnly(true);
+        }
+
+        function setLang(lang) {
+            var editor = ace.edit("editor");
+            const path = "ace/mode/" + lang;
+            editor.session.setMode(path);
         }
 
         function getEditorData() {

@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace school.Pages
+namespace school.Pages.subcomponents
 {
     #line hidden
     using System;
@@ -118,14 +118,13 @@ using school.Data;
 #line hidden
 #nullable disable
 #nullable restore
-#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
+#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Kod_IK1203.razor"
 using Microsoft.EntityFrameworkCore;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/view/{Id:int}")]
-    public partial class CodePrev : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class Kod_IK1203 : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -133,33 +132,65 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
+#line 42 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\subcomponents\Kod_IK1203.razor"
        
+    public MudTable<Kod> table;
+
+    private Kod CurrentKod;
+
+    private MudMessageBox mbox { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
+
+    private string Code;
+
     [Parameter]
     public int Id { get; set; }
 
     [Parameter]
     public string Kurs { get; set; }
 
-    public Kod kod { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    // LOAD DATA FROM DATABASE
+    private async Task<TableData<Kod>> ServerReload(TableState state)
     {
-        kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
+        var results = await _context.Code.Where(x => x.Kursnamn == "IK1203").OrderByDescending(x => x.Lang).ToListAsync();
+        StateHasChanged();
+        return new TableData<Kod>() { Items = results };
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    // DELETE EXAM
+    private async void Delete()
     {
-        await _jsRuntime.InvokeVoidAsync("renderViewer", kod.Data);
-        await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
+        _context.Code.Remove(CurrentKod);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
+    }
+
+    // OPEN DELETE PROMPT
+    private async void ToggleDeleteBox(Kod kod)
+    {
+        CurrentKod = kod;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
+
+    private async Task ViewNewTab(int id)
+    {
+        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Kurs = kod.Kursnamn;
+        Id = id;
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/view/{Id}/", "_blank" });
     }
 
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private school.Data.ApplicationDbContext _context { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDialogService DialogService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ISnackbar Snackbar { get; set; }

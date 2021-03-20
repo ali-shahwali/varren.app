@@ -117,49 +117,14 @@ using school.Data;
 #line default
 #line hidden
 #nullable disable
-#nullable restore
-#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
-using Microsoft.EntityFrameworkCore;
-
-#line default
-#line hidden
-#nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/view/{Id:int}")]
-    public partial class CodePrev : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/II1305/")]
+    public partial class II1305 : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
-       
-    [Parameter]
-    public int Id { get; set; }
-
-    [Parameter]
-    public string Kurs { get; set; }
-
-    public Kod kod { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        kod = await _context.Code.Where(x => x.Id == Id).FirstOrDefaultAsync();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await _jsRuntime.InvokeVoidAsync("renderViewer", kod.Data);
-        await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
-    }
-
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRuntime { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private school.Data.ApplicationDbContext _context { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDialogService DialogService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ISnackbar Snackbar { get; set; }

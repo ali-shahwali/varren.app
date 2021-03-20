@@ -118,14 +118,14 @@ using school.Data;
 #line hidden
 #nullable disable
 #nullable restore
-#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
+#line 1 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\EditCode.razor"
 using Microsoft.EntityFrameworkCore;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/view/{Id:int}")]
-    public partial class CodePrev : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/{Kurs}/edit/{Id:int}")]
+    public partial class EditCode : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -133,7 +133,7 @@ using Microsoft.EntityFrameworkCore;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\CodePrev.razor"
+#line 10 "C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\Pages\EditCode.razor"
        
     [Parameter]
     public int Id { get; set; }
@@ -150,8 +150,18 @@ using Microsoft.EntityFrameworkCore;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _jsRuntime.InvokeVoidAsync("renderViewer", kod.Data);
+        await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", kod.Data);
         await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
+    }
+
+    public async Task Save()
+    {
+        kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+
+        _context.Update(kod);
+        _context.SaveChanges();
+        StateHasChanged();
+        Snackbar.Add("Sparad", Severity.Normal);
     }
 
 

@@ -4,7 +4,7 @@
 
 @if (table == null)
 {
-<MudProgressLinear Color="Color.Secondary" Indeterminate="true"/>
+<MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
 }
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Tenta>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>

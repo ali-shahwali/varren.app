@@ -20,7 +20,6 @@
         <MudTd DataLabel="Språk">@context.Lang</MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => ViewNewTab(context.Id))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
-            <MudIconButton OnClick="@(e => EditNewTab(context.Id))" Color="Color.Primary" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Edit" />
         </MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
@@ -60,7 +59,7 @@
     // LOAD DATA FROM DATABASE
     private async Task<TableData<Kod>> ServerReload(TableState state)
     {
-        var results = await _context.Code.Where(x => x.Kursnamn == "ID1019").OrderByDescending(x => x.Lang).ToListAsync();
+        var results = await _context.Code.Where(x => x.Kursnamn == "IK1203").OrderByDescending(x => x.Lang).ToListAsync();
         StateHasChanged();
         return new TableData<Kod>() { Items = results };
     }
@@ -90,14 +89,6 @@
         Kurs = kod.Kursnamn;
         Id = id;
         await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/view/{Id}/", "_blank" });
-    }
-
-    private async Task EditNewTab(int id)
-    {
-        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
-        Kurs = kod.Kursnamn;
-        Id = id;
-        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/edit/{Id}/", "_blank" });
     }
 
 }

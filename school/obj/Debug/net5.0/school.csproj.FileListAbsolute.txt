@@ -224,3 +224,9 @@ C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\R
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\_ViewImports.cshtml.g.cs
 C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\_ViewStart.cshtml.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\II1305.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\subcomponents\Kod_IK1203.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\II1305.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\subcomponents\Kod_IK1203.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\RazorDeclaration\Pages\EditCode.razor.g.cs
+C:\Users\ali_z\source\repos\ali-shahwali\school-blazor\school\obj\Debug\net5.0\Razor\Pages\EditCode.razor.g.cs

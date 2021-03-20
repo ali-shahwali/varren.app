@@ -2,9 +2,10 @@
 @inject school.Data.ApplicationDbContext _context
 @inject IJSRuntime _jsRuntime
 
-@page "/{Kurs}/view/{Id:int}"
+@page "/{Kurs}/edit/{Id:int}"
 
-<div class="viewer" id="editor"></div>
+<div class="viewerEditor" id="editor"></div>
+<MudIconButton Color="Color.Success" Style="position: fixed; right: 3px; top: 60px" Icon="@Icons.Material.Filled.Save" OnClick="Save"/>
 
 @code {
     [Parameter]
@@ -22,8 +23,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _jsRuntime.InvokeVoidAsync("renderViewer", kod.Data);
+        await _jsRuntime.InvokeVoidAsync("renderPreloadEditor", kod.Data);
         await _jsRuntime.InvokeVoidAsync("setLang", kod.Lang);
     }
 
+    public async Task Save()
+    {
+        kod.Data = await _jsRuntime.InvokeAsync<string>("getEditorData");
+
+        _context.Update(kod);
+        _context.SaveChanges();
+        StateHasChanged();
+        Snackbar.Add("Sparad", Severity.Normal);
+    }
+
 }
+
