@@ -11,21 +11,28 @@
         <MudIconButton Target="top" Link="https://github.com/ali-shahwali/schoolOrganizer-blazor" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" />
         <MudMenu Class="ml-5" Direction="Direction.Right" OffsetY="true">
             <ActivatorContent>
-                <MudAvatar Color="Color.Dark">
+                <MudAvatar Color="Color.Transparent">
                     <MudIcon Icon="@Icons.Material.Filled.MoreVert" />
                 </MudAvatar>
             </ActivatorContent>
             <ChildContent>
                 <form method="post" action="Identity/Account/LogOut">
-                    <button type="submit"><MudMenuItem>Log out</MudMenuItem></button>
+                    <button type="submit">
+                    <MudMenuItem>
+                       Logga ut
+                    </MudMenuItem>
+                    </button>
                 </form>
             </ChildContent>
         </MudMenu>
     </MudAppBar>
     <MudDrawer Width="300px" @bind-Open="_drawerOpen" Elevation="2">
         <MudNavMenu>
-            <MudText Color="Color.Primary" Typo="Typo.h6" Class="px-4">varren 1.0</MudText>
-            <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Kurser</MudText>
+            <MudText Color="Color.Primary" Typo="Typo.h6" Class="px-4">
+                <code style="font-size: 40px">
+                    varren 1.0
+                </code>
+            </MudText>
             <MudDivider Class="my-2" />
             <span style="font-size: 16px!important">
                 <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>

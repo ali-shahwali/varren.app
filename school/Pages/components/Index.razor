@@ -1,35 +1,40 @@
 ﻿@page "/"
 
-<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-    <MudGrid>
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Länkar</MudText>
+    @*<MudText Align="Align.Center">text</MudText>*@
+    <MudGrid Class="mt-8">
         <MudItem xs="12" sm="6" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="12" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="6">
-            <MudGrid>
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-            </MudGrid>
+            <MudCard Style="background-color: #1050a7" Elevation="25" Class="rounded-lg pb-4">
+                <MudCardMedia Image="https://i.imgur.com/yYIgYMr.png" Height="400" />
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Target="_blank" Link="https://www.kth.se/" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">KTH</MudButton>
+                </MudCardActions>
+            </MudCard>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+            <MudCard Style="background-color: #ffffff" Elevation="25" Class="rounded-lg pb-4">
+                <MudCardMedia Image="https://i.imgur.com/Xk7Nn6Z.png" Height="400" />
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Canvas</MudButton>
+                </MudCardActions>
+            </MudCard>
         </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="12" md="4">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
+        @*<MudItem xs="12" sm="12" md="4">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Start Now</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>*@
     </MudGrid>
 </MudContainer>
 
