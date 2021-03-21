@@ -5,11 +5,12 @@
 @page "/{Kurs}/edit/{Id:int}"
 
 
-<MudIconButton  Class="ml-2" Color="Color.Success" Style="position: fixed; right: 1px; top: 60px" Icon="@Icons.Material.Filled.Save" OnClick="Save" />
+<MudIconButton Class="ml-2" Color="Color.Success" Style="position: fixed; right: 1px; top: 60px" Icon="@Icons.Material.Filled.Save" OnClick="Save" />
 @if (lang == "html")
 {
     <div class="viewerEditorHtml" id="editor"></div>
-    @((MarkupString)Code)
+    <iframe style="height: 100vh" srcdoc="@((MarkupString)Code)">
+    </iframe>
     <MudIconButton Class="ml-2" Color="Color.Success" Style="position: fixed; right: 1px; top: 120px" Icon="@Icons.Material.Filled.PlayCircleOutline" OnClick="Preview" />
 }
 else

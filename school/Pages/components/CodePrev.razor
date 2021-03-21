@@ -8,7 +8,8 @@
 @if (lang == "html")
 {
     <div class="viewerHtml" id="editor"></div>
-    @((MarkupString)Code)
+    <iframe style="height: 100vh" srcdoc="@((MarkupString)Code)">
+    </iframe>     
 }
 else
 {

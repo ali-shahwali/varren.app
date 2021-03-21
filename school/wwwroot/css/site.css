@@ -32,7 +32,7 @@
 .viewerEditorHtml {
     position: relative;
     height: calc(50vh - 64px) !important;
-    width: 1580px !important;
+    width: 1560px !important;
     top: 0;
     right: 0;
     bottom: 0;
@@ -42,7 +42,7 @@
 .viewerEditor {
     position: relative;
     height: calc(100vh - 64px) !important;
-    width: 1580px !important;
+    width: 1560px !important;
     top: 0;
     right: 0;
     bottom: 0;
