@@ -1,1 +1,4 @@
 /wwwroot/js
+/bin
+/obj
+/.config
