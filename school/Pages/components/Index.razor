@@ -16,15 +16,16 @@
             <MudCard Style="background-color: #ffffff" Elevation="25" Class="rounded-lg pb-4">
                 <MudCardMedia Image="https://i.imgur.com/Xk7Nn6Z.png" Height="400" />
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Canvas</MudButton>
+                    <MudButton Target="_blank" Link="https://canvas.kth.se/" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Canvas</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
-        @*<MudItem xs="12" sm="12" md="4">
+        <MudItem xs="12" sm="12" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">
-                <MudCardHeader>
+                <MudCardHeader Style="font-size: 25px">
                     <CardHeaderContent>
-
+                        <MudIcon Icon="@Icons.Filled.Schedule"/>
+                        Schema för idag
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
@@ -34,7 +35,7 @@
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Start Now</MudButton>
                 </MudCardActions>
             </MudCard>
-        </MudItem>*@
+        </MudItem>
     </MudGrid>
 </MudContainer>
 

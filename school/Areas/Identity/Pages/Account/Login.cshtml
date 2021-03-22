@@ -40,20 +40,30 @@
         }
 
         code {
-            color: rebeccapurple;
+            color: #270a42;
             user-select: none;
-            -webkit-filter: brightness(1.7);
+            background: -webkit-linear-gradient(0deg, #270a42, #32333d);
+            -webkit-filter: brightness(2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 50px;
-            -webkit-animation: hue 5s infinite linear;
+            /*-webkit-animation: hue 10s infinite linear;*/
         }
 
-        @@-webkit-keyframes hue {
-            from, to { background-color: rebeccapurple }
-            50% { background-color: #32333d }
-            99% { background-color: rebeccapurple }  
-        }
+        /*@@-webkit-keyframes hue {
+            from, to 
+            {
+                background-color: #270a42
+            }
+            50% 
+            { 
+                background-color: #32333d 
+            }
+            99% 
+            {
+                background-color: #270a42
+            }  
+        }*/
 
         .form-signin {
             width: 100%;

@@ -1,0 +1,37 @@
+﻿@page "/Info"
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Information</MudText>
+    <MudGrid>
+        <MudItem sm="12">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">Source code</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Link="https://github.com/ali-shahwali/varren.app" StartIcon="@Icons.Custom.Brands.GitHub" Size="Size.Large">Github</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+    <MudGrid>
+        <MudItem sm="12">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">Written in the MudBlazor framework.</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Link="https://mudblazor.com/" StartIcon="@Icons.Custom.Brands.MudBlazor" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">MudBlazor.com</MudButton>
+                    <MudButton Link="https://github.com/Garderoben/MudBlazor" EndIcon="@Icons.Custom.Brands.GitHub" Size="Size.Large">Github</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+@code {
+
+}
