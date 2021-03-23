@@ -4,7 +4,7 @@
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Länkar</MudText>
     @*<MudText Align="Align.Center">text</MudText>*@
     <MudGrid Class="mt-8">
-        <MudItem xs="12" sm="6" md="4">
+        <MudItem xs="12" sm="6" md="6">
             <MudCard Style="background-color: #1050a7" Elevation="25" Class="rounded-lg pb-4">
                 <MudCardMedia Image="https://i.imgur.com/yYIgYMr.png" Height="400" />
                 <MudCardActions Class="d-flex justify-center">
@@ -12,7 +12,7 @@
                 </MudCardActions>
             </MudCard>
         </MudItem>
-        <MudItem xs="12" sm="6" md="4">
+        <MudItem xs="12" sm="6" md="6">
             <MudCard Style="background-color: #ffffff" Elevation="25" Class="rounded-lg pb-4">
                 <MudCardMedia Image="https://i.imgur.com/Xk7Nn6Z.png" Height="400" />
                 <MudCardActions Class="d-flex justify-center">
@@ -20,19 +20,18 @@
                 </MudCardActions>
             </MudCard>
         </MudItem>
-        <MudItem xs="12" sm="12" md="4">
+        <MudItem xs="12" sm="12" md="12">
             <MudCard Elevation="25" Class="rounded-lg pb-4">
                 <MudCardHeader Style="font-size: 25px">
                     <CardHeaderContent>
-                        <MudIcon Icon="@Icons.Filled.Schedule"/>
                         Schema för idag
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-
+                    <SchemaMin/>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Start Now</MudButton>
+                    <MudButton Link="/schema" StartIcon="@Icons.Material.Filled.Schedule" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Schema</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>

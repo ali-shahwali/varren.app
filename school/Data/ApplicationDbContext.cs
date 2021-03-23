@@ -18,5 +18,7 @@ namespace school.Data
         public DbSet<Labb> Labbar { get; set; }
 
         public DbSet<Kod> Code { get; set; }
+
+        public DbSet<Event> Events { get; set; }
     }
 }
