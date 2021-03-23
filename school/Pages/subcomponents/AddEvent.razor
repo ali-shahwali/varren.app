@@ -36,6 +36,12 @@
 
     public void OnValidSubmit(EditContext context)
     {
+        if(ev.Tid == null || ev.Datum == null)
+        {
+            Snackbar.Add("Välj datum och tid", Severity.Normal);
+            return;
+        }
+
         // build data object
         ev = new Event()
         {
@@ -46,7 +52,7 @@
             Type = ev.Type
         };
 
-    // this is where we will save to the database
+        // this is where we will save to the database
         _context.Events.Add(ev);
         _context.SaveChanges();
 

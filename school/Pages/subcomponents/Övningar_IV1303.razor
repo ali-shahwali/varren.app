@@ -1,0 +1,128 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject school.Data.ApplicationDbContext _context
+@inject IJSRuntime _jsRuntime
+
+@if (table == null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Övning>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Ämne</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Ämne">@context.Ämne</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" OnClick="@(e => ToggleDeleteBox(context))" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Avbryt">
+    <MessageContent>
+        Är du säker?
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="Delete" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Ja, Ta bort!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@* PDF *@
+<MudOverlay ZIndex="9999" Style="padding-top: 355px; padding-right: 35px" Visible="isVisiblePdf" DarkBackground="true" Absolute="true">
+    <NoJS.PDFViewer.PDFViewer Document="@Pdf"
+                              DocumentHeight="940px"
+                              DocumentName="@Pdfpath"
+                              DocumentWidth="1500px" />
+    <MudFab Style="position: fixed; right: 3px; top: 60px" OnClick="@(e => ToggleOverlayPdf(false))" Color="Color.Error" Icon="@Icons.Material.Filled.Close" />
+</MudOverlay>
+
+@code {
+
+    public MudTable<Övning> table;
+
+    [Parameter]
+    public string Pdfpath { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string Kurs { get; set; }
+
+    public byte[] Pdf { get; set; }
+
+    public bool isVisiblePdf;
+
+    private MudMessageBox mbox { get; set; }
+
+    private Övning CurrentÖvning { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
+
+    private async Task<TableData<Övning>> ServerReload(TableState state)
+    {
+        var results = await _context.Övningar.Where(x => x.Kursnamn == "IV1303").ToListAsync();
+        StateHasChanged();
+        return new TableData<Övning>() { Items = results };
+    }
+
+    private async void Delete()
+    {
+        _context.Övningar.Remove(CurrentÖvning);
+        _context.SaveChanges();
+
+        await table.ReloadServerData();
+        Snackbar.Add("Deleted", Severity.Normal);
+    }
+
+    public async void GetBytesFromPDF(Övning övning, bool toggle)
+    {
+        await _context.Övningar.Where(x => x.Id == övning.Id).FirstOrDefaultAsync();
+        Pdf = Convert.FromBase64String(övning.Data);
+        ToggleOverlayPdf(toggle);
+    }
+
+    public void ToggleOverlayPdf(bool toggle)
+    {
+        isVisiblePdf = toggle;
+        StateHasChanged();
+    }
+
+    // OPEN DELETE PROMPT
+    private async void ToggleDeleteBox(Övning övning)
+    {
+        CurrentÖvning = övning;
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
+
+    protected async void NewTabPdf(int id)
+    {
+        Övning övning = await _context.Övningar.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Id = övning.Id;
+        Type = "ovning";
+
+        string ämne = övning.Ämne;
+        Pdfpath = ämne;
+
+        Kurs = "IV1303";
+
+        OnParametersSet();
+        await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/{Type}/{Pdfpath}/{Id}", "_blank" });
+    }
+
+}
+
+
