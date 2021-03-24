@@ -1,5 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore
-@inject school.Data.ApplicationDbContext _context
+﻿@inject school.Data.ApplicationDbContext _context
 @inject IJSRuntime _jsRuntime
 
 @if (table == null)
@@ -80,10 +79,10 @@
     }
 
     // DELETE EXAM
-    private async void Delete()
+    private async Task Delete()
     {
         _context.Tentamen.Remove(CurrentTenta);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         await table.ReloadServerData();
         Snackbar.Add("Deleted", Severity.Normal);

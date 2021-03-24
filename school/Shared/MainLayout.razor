@@ -9,7 +9,6 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudAppBarSpacer />
         <MudIconButton Link="/Info" Icon="@Icons.Material.Filled.Info" Color="Color.Inherit" Edge="Edge.End" />
-        @*<MudIconButton Target="top" Link="https://github.com/ali-shahwali/schoolOrganizer-blazor" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" />*@
         <MudMenu Class="ml-5" Direction="Direction.Right" OffsetY="true">
             <ActivatorContent>
                 <MudAvatar Color="Color.Transparent">
@@ -42,11 +41,14 @@
                     <MudNavLink Href="/IK1203">IK1203</MudNavLink>
                     <MudNavLink Href="/ID1019">ID1019</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Skapa" Expanded="false">
-                    <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
-                    <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
-                    <MudNavLink Href="/skapa_kod">Lägg till kod</MudNavLink>
-                </MudNavGroup>
+                <AuthorizeView Roles="Admin">
+                    <MudNavGroup Title="Skapa" Expanded="false">
+                        <MudNavLink Href="/skapa_tenta">Lägg till tenta</MudNavLink>
+                        <MudNavLink Href="/skapa_ovning">Lägg till övning</MudNavLink>
+                        <MudNavLink Href="/skapa_kod">Lägg till kod</MudNavLink>
+                    </MudNavGroup>
+                </AuthorizeView>
+                <MudNavLink Icon="@Icons.Material.Filled.Settings" Href="/administration">Admin</MudNavLink>
             </span>
         </MudNavMenu>
     </MudDrawer>

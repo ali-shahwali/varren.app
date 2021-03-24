@@ -1,0 +1,70 @@
+﻿@page "/administration"
+@inject UserManager<IdentityUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@inject school.Data.ApplicationDbContext _context
+@attribute [Authorize(Roles = "Admin")]
+
+<MudTabs Outlined="true">
+    <MudTabPanel Text="Account management" Icon="@Icons.Material.Filled.SupervisorAccount">
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Admins">
+                <MudTable ServerData="@(new Func<TableState, Task<TableData<IdentityUser>>>(ServerReload))" @ref="table1" Hover="true" Breakpoint="Breakpoint.Sm">
+                    <HeaderContent>
+                        <MudTh>ID</MudTh>
+                        <MudTh>E-mail</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="ID">@context.Id</MudTd>
+                        <MudTd DataLabel="E-mail">@context.UserName</MudTd>
+                        @*<MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(e => OpenEditPage(context.Id))"/>
+                        </MudTd>*@
+                    </RowTemplate>
+                </MudTable>
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Users">
+                <MudTable ServerData="@(new Func<TableState, Task<TableData<IdentityUser>>>(ServerReload))" @ref="table2" Hover="true" Breakpoint="Breakpoint.Sm">
+                    <HeaderContent>
+                        <MudTh>ID</MudTh>
+                        <MudTh>E-mail</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="ID">@context.Id</MudTd>
+                        <MudTd DataLabel="E-mail">@context.UserName</MudTd>
+                        @*<MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(e => OpenEditPage(context.Id))" />
+                        </MudTd>*@
+                    </RowTemplate>
+                </MudTable>
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Unassigned users">
+                <UnassignedUser />
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </MudTabPanel>
+    <MudTabPanel Text="Site management" Icon="@Icons.Material.Filled.Build">
+
+    </MudTabPanel>
+    <MudTabPanel Text="Diagnostics" Icon="@Icons.Material.Filled.BarChart">
+
+    </MudTabPanel>
+</MudTabs>
+
+
+
+@code {
+    public MudTable<IdentityUser> table2;
+    public MudTable<IdentityUser> table1;
+
+
+    // load only user accounts from database
+    private async Task<TableData<IdentityUser>> ServerReload(TableState state)
+    {
+        var results = await _UserManager.Users.ToListAsync();
+
+        StateHasChanged(); 
+        return new TableData<IdentityUser>() { Items = results };
+    }
+}

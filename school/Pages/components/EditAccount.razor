@@ -1,0 +1,70 @@
+﻿@page "/administrator/edit/{Id}"
+@inject school.Data.ApplicationDbContext _context
+
+@*<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@Account" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid Spacing="6" Class="mt-16">
+            <MudItem xs="7">
+                <MudText Typo="Typo.h5" GutterBottom="true">Skapa tenta</MudText>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudSelect T="string" @bind-Value="Account.RoleId" Label="Rights">
+                            <MudSelectItem Value="@("admin")"> Admin </MudSelectItem>
+                            <MudSelectItem Value="@("user")"> User </MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="6">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Update</MudButton>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="6">
+                        <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="ToggleDeleteBox" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Delete account</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>*@
+
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        Are you sure? This action cannot be undone.
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="DeleteAccount" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">I am sure</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private MudMessageBox mbox { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task ToggleDeleteBox()
+    {
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
+
+    private async Task DeleteAccount()
+    {
+
+        NavigationManager.NavigateTo("/administration");
+    }
+
+    public async Task OnValidSubmit(EditContext context)
+    {
+
+        NavigationManager.NavigateTo("/administration");
+    }
+}

@@ -1,8 +1,9 @@
 ﻿@page "/skapa_ovning"
 @using System.IO
 @using System.Text;
-
 @inject school.Data.ApplicationDbContext _context
+
+@attribute [Authorize(Roles = "Admin")]
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <EditForm Model="@övning" OnSubmit="OnValidSubmit">

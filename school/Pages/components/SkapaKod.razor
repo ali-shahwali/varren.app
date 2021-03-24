@@ -2,6 +2,8 @@
 @inject school.Data.ApplicationDbContext _context
 @inject IJSRuntime _jsRuntime
 
+@attribute [Authorize(Roles = "Admin")]
+
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Large">
     <EditForm Model="@kod" OnSubmit="OnSubmit">
         <DataAnnotationsValidator />
