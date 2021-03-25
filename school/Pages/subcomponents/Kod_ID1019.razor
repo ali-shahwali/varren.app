@@ -19,12 +19,14 @@
         <MudTd DataLabel="Skapare">@context.Skapare</MudTd>
         <MudTd DataLabel="Språk">@context.Lang</MudTd>
         <MudTd>
-            <MudIconButton OnClick="@(e => ViewNewTab(context.Id))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
-            <MudIconButton OnClick="@(e => EditNewTab(context.Id))" Color="Color.Primary" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Edit" />
+            <MudIconButton OnClick="@(e => ViewNewTab(context))" Variant="Variant.Filled" Icon="@Icons.Custom.FileFormats.FileCode" Color="Color.Primary" />
+            <MudIconButton OnClick="@(e => EditNewTab(context))" Color="Color.Primary" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Edit" />
         </MudTd>
-        <MudTd>
-            <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-        </MudTd>
+        <AuthorizeView Roles="Admin" Context="table">
+            <MudTd>
+                <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            </MudTd>
+        </AuthorizeView>
     </RowTemplate>
 </MudTable>
 
@@ -84,19 +86,17 @@
         StateHasChanged();
     }
 
-    private async Task ViewNewTab(int id)
+    private async Task ViewNewTab(Kod kod)
     {
-        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
         Kurs = kod.Kursnamn;
-        Id = id;
+        Id = kod.Id;
         await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/view/{Id}/", "_blank" });
     }
 
-    private async Task EditNewTab(int id)
+    private async Task EditNewTab(Kod kod)
     {
-        Kod kod = await _context.Code.Where(x => x.Id == id).FirstOrDefaultAsync();
         Kurs = kod.Kursnamn;
-        Id = id;
+        Id = kod.Id;
         await _jsRuntime.InvokeVoidAsync("blazorOpen", new object[2] { $"/{Kurs}/edit/{Id}/", "_blank" });
     }
 

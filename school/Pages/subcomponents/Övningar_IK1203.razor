@@ -3,7 +3,7 @@
 
 @if (table == null)
 {
-<MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Övning>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
@@ -16,11 +16,14 @@
         <MudTd DataLabel="Ämne">@context.Ämne</MudTd>
         <MudTd>
             <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
-            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
         </MudTd>
-        <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" OnClick="@(e => ToggleDeleteBox(context))" />
-        </MudTd>
+        <AuthorizeView Roles="Admin" Context="table">
+            <MudTd>
+                <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            </MudTd>
+        </AuthorizeView>
+        <MudTd />
     </RowTemplate>
 </MudTable>
 
@@ -107,9 +110,8 @@
         StateHasChanged();
     }
 
-    protected async void NewTabPdf(int id)
+    protected async void NewTabPdf(Övning övning)
     {
-        Övning övning = await _context.Övningar.Where(x => x.Id == id).FirstOrDefaultAsync();
         Id = övning.Id;
         Type = "ovning";
 

@@ -1,15 +1,16 @@
-﻿@page "/administrator/edit/{Id}"
+﻿@page "/administration/edit/{Id}"
 @inject school.Data.ApplicationDbContext _context
+@inject UserManager<IdentityUser> _UserManager
 
-@*<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
-    <EditForm Model="@Account" OnValidSubmit="OnValidSubmit">
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@AccountRole" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator />
         <MudGrid Spacing="6" Class="mt-16">
             <MudItem xs="7">
                 <MudText Typo="Typo.h5" GutterBottom="true">Skapa tenta</MudText>
                 <MudGrid>
                     <MudItem xs="12">
-                        <MudSelect T="string" @bind-Value="Account.RoleId" Label="Rights">
+                        <MudSelect T="string" @bind-Value="AccountRole.RoleId" Label="Rights">
                             <MudSelectItem Value="@("admin")"> Admin </MudSelectItem>
                             <MudSelectItem Value="@("user")"> User </MudSelectItem>
                         </MudSelect>
@@ -24,7 +25,7 @@
             </MudItem>
         </MudGrid>
     </EditForm>
-</MudContainer>*@
+</MudContainer>
 
 @* DELETE PROMPT *@
 <MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
@@ -44,9 +45,15 @@
 
     private string state = "Message box hasn't been opened yet";
 
+    private IdentityUser Account;
+
+    private IdentityUserRole<string> AccountRole = new IdentityUserRole<string>();
+
     protected override async Task OnInitializedAsync()
     {
+        Account = await _UserManager.Users.Where(x => x.Id.Equals(Id)).FirstOrDefaultAsync();
 
+        AccountRole = await _context.UserRoles.Where(x => x.UserId.Equals(Id)).FirstOrDefaultAsync();
     }
 
     private async Task ToggleDeleteBox()
@@ -58,12 +65,16 @@
 
     private async Task DeleteAccount()
     {
+        _context.Users.Remove(Account);
+        _context.UserRoles.Remove(AccountRole);
+        await _context.SaveChangesAsync();
 
         NavigationManager.NavigateTo("/administration");
     }
 
     public async Task OnValidSubmit(EditContext context)
     {
+        await _context.SaveChangesAsync();
 
         NavigationManager.NavigateTo("/administration");
     }

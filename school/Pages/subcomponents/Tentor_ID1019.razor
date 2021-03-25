@@ -16,12 +16,14 @@
         <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
         <MudTd DataLabel="Examinator">@context.Examinator</MudTd>
         <MudTd>
-            <MudIconButton OnClick="@(e => GetBytesFromPDF(context.Id, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
-            <MudIconButton OnClick="@(e => NewTabPdf(context.Id))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => GetBytesFromPDF(context, true))" Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Secondary" />
+            <MudIconButton OnClick="@(e => NewTabPdf(context))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
         </MudTd>
-        <MudTd>
-            <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-        </MudTd>
+        <AuthorizeView Roles="Admin" Context="table">
+            <MudTd>
+                <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+            </MudTd>
+        </AuthorizeView>
     </RowTemplate>
 </MudTable>
 
@@ -89,9 +91,8 @@
     }
 
     // LOAD PDF
-    private async Task GetBytesFromPDF(int id, bool toggle)
+    private void GetBytesFromPDF(Tenta tenta, bool toggle)
     {
-        Tenta tenta = await _context.Tentamen.Where(x => x.Id == id).FirstOrDefaultAsync();
         Pdf = Convert.FromBase64String(tenta.Data);
         if (toggle)
             ToggleOverlayPdf(toggle);
@@ -113,9 +114,8 @@
         StateHasChanged();
     }
 
-    protected async Task NewTabPdf(int id)
+    protected async Task NewTabPdf(Tenta tenta)
     {
-        Tenta tenta = await _context.Tentamen.Where(x => x.Id == id).FirstOrDefaultAsync();
         Id = tenta.Id;
         Type = "tenta";
 
