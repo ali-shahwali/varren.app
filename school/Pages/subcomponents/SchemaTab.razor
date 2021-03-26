@@ -1,73 +1,97 @@
 ﻿@inject school.Data.ApplicationDbContext _context
 
-@if (table == null)
+@if (activities == null)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Event>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
-    <HeaderContent>
-        <MudTh>Datum</MudTh>
-        <MudTh>Tid</MudTh>
-        <MudTh>Typ</MudTh>
-        <MudTh>Att göra</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh></MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Datum">@context.Datum.Value.ToShortDateString()</MudTd>
-        <MudTd DataLabel="Tid">@string.Format("{0:00}:{1:00}", context.Tid.Value.Hours, context.Tid.Value.Minutes)</MudTd>
-        <MudTd DataLabel="Typ">@context.Type</MudTd>
-        <MudTd DataLabel="Att göra">@context.ToDo</MudTd>
-        @if (!context.IsDone)
+<MudContainer Class="mt-5" Fixed="true">
+    <MudExpansionPanels MultiExpansion="true">
+        @foreach (var item in Weeks)
         {
-            <MudTd DataLabel="Status">Inte klart</MudTd>
-            <MudTd>
-                <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(context.Id, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
-            </MudTd>
+            var str = $"Vecka {item.ToString()}"; 
+            <MudExpansionPanel Text="@str">
+                <MudSimpleTable Elevation="4" Outlined="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Tid</th>
+                            <th>Att göra</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var act in GetByWeek(item))
+                        {
+                        <tr>
+                            <td>@act.Datum.Value.ToShortDateString()</td>
+                            <td>@string.Format("{0:00}:{1:00}", act.Time.Value.Hours, act.Time.Value.Minutes)</td>
+                            <td>@act.ToDo</td>
+                            @if (!act.IsDone)
+                            {
+                                <td>Inte klart</td>
+                                <td style="text-align: right">
+                                    <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(act, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>Klart</td>
+                                <td style="text-align: right">
+                                    <MudIconButton  Color="Color.Warning" OnClick="@(e => UpdateStatus(act, false))" Icon="@Icons.Material.Filled.Redo"/>
+                                </td>
+                            }
+                            <td>
+                                <MudIconButton Color="Color.Error" OnClick="@(e => Remove(act))" Icon="@Icons.Material.Filled.Close" />
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </MudSimpleTable>
+            </MudExpansionPanel>
         }
-        else
-        {
-            <MudTd DataLabel="Status">Klart!</MudTd>
-            <MudTd>
-                <MudIconButton Color="Color.Warning" OnClick="@(e => UpdateStatus(context.Id, false))" Icon="@Icons.Material.Filled.Redo" />
-            </MudTd>
-        }
-        <MudTd>
-            <MudIconButton Color="Color.Error" OnClick="@(e => Remove(context.Id))" Icon="@Icons.Material.Filled.Close" />
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+    </MudExpansionPanels>
+</MudContainer>
+
+
 
 @code {
-    public MudTable<Event> table;
+    public List<Activity> activities { get; set; } = new List<Activity>();
+
+    public List<int> Weeks { get; set; } = new List<int>();
 
     // LOAD DATA FROM DATABASE
-    private async Task<TableData<Event>> ServerReload(TableState state)
+    protected override async Task OnInitializedAsync()
     {
-        var results = await _context.Events.OrderByDescending(x => x.Datum).ToListAsync();
-        StateHasChanged();
-        return new TableData<Event>() { Items = results };
+        activities = await _context.Activities.OrderBy(x => x.Week).ToListAsync();
+        foreach (var item in activities)
+        {
+            if(!Weeks.Contains(item.Week))
+                Weeks.Add(item.Week);
+        }
     }
 
-    private async Task UpdateStatus(int id, bool b)
+    private List<Activity> GetByWeek(int week)
     {
-        Event ev = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
-        ev.IsDone = b;
+        return _context.Activities.Where(x => x.Week == week).OrderBy(x => x.Datum).ToList();
+    }
 
-        _context.Events.Update(ev);
+    private void UpdateStatus(Activity act, bool b)
+    {
+        act.IsDone = b;
+
+        _context.Activities.Update(act);
         _context.SaveChanges();
         StateHasChanged();
     }
 
-    private async Task Remove(int id)
+    
+    private void Remove(Activity act)
     {
-        Event ev = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
-
-        _context.Events.Remove(ev);
+        _context.Activities.Remove(act);
         _context.SaveChanges();
-        await table.ReloadServerData();
         StateHasChanged();
     }
 }

@@ -5,7 +5,7 @@
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Event>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Activity>>>(ServerReload))" @ref="table" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Tid</MudTh>
         <MudTh>Typ</MudTh>
@@ -14,7 +14,7 @@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Tid">@string.Format("{0:00}:{1:00}", context.Tid.Value.Hours, context.Tid.Value.Minutes)</MudTd>
+        <MudTd DataLabel="Tid">@string.Format("{0:00}:{1:00}", context.Time.Value.Hours, context.Time.Value.Minutes)</MudTd>
         <MudTd DataLabel="Typ">@context.Type</MudTd>
         <MudTd DataLabel="Att göra">@context.ToDo</MudTd>
         @if (!context.IsDone)
@@ -35,22 +35,22 @@
 </MudTable>
 
 @code {
-    public MudTable<Event> table;
+    public MudTable<Activity> table;
 
     // LOAD DATA FROM DATABASE
-    private async Task<TableData<Event>> ServerReload(TableState state)
+    private async Task<TableData<Activity>> ServerReload(TableState state)
     {
-        var results = await _context.Events.Where(y => y.Datum.Value.Day == DateTime.Now.Day).OrderByDescending(x => x.Datum).ToListAsync();
+        var results = await _context.Activities.Where(y => y.Datum.Value.Day == DateTime.Now.Day).OrderByDescending(x => x.Datum).ToListAsync();
         StateHasChanged();
-        return new TableData<Event>() { Items = results };
+        return new TableData<Activity>() { Items = results };
     }
 
     private async Task UpdateStatus(int id, bool b)
     {
-        Event ev = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
+        Activity ev = await _context.Activities.Where(x => x.Id == id).FirstOrDefaultAsync();
         ev.IsDone = b;
 
-        _context.Events.Update(ev);
+        _context.Activities.Update(ev);
         _context.SaveChanges();
         StateHasChanged();
     }

@@ -2,7 +2,7 @@
 
 namespace school.Migrations
 {
-    public partial class Modell15 : Migration
+    public partial class ScheduleModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

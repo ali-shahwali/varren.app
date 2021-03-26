@@ -219,7 +219,7 @@ namespace school.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("school.Data.Event", b =>
+            modelBuilder.Entity("school.Data.Activity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,7 +232,7 @@ namespace school.Migrations
                     b.Property<bool>("IsDone")
                         .HasColumnType("bit");
 
-                    b.Property<TimeSpan?>("Tid")
+                    b.Property<TimeSpan?>("Time")
                         .HasColumnType("time");
 
                     b.Property<string>("ToDo")
@@ -241,9 +241,12 @@ namespace school.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Week")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("school.Data.Kod", b =>

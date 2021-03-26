@@ -1,0 +1,78 @@
+﻿@page "/schema/add_activity"
+@using System.Globalization
+@inject school.Data.ApplicationDbContext _context
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@activity" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid Spacing="6" Class="mt-16">
+            <MudItem xs="7">
+                <MudText Typo="Typo.h5" GutterBottom="true">Lägg till</MudText>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Att göra" @bind-Value="activity.ToDo" For="@(() => activity.ToDo)" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudSelect T="string" @bind-Value="activity.Type" Label="Typ">
+                            <MudSelectItem Value="@("Programmering")"> Programmering </MudSelectItem>
+                            <MudSelectItem Value="@("Skola")"> Skola </MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudDatePicker Label="Datum" @bind-Date="activity.Datum" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTimePicker Label="Tid" AmPm="true" @bind-Time="activity.Time" />
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="6">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>
+
+@code {
+    Activity activity = new Activity();
+
+    DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+
+    public async Task OnValidSubmit(EditContext context)
+    {
+        if (activity.Time == null || activity.Datum == null)
+        {
+            Snackbar.Add("Välj datum och tid", Severity.Normal);
+            return;
+        }
+
+        activity.Datum = activity.Datum.Value.AddSeconds(activity.Time.Value.TotalSeconds);
+
+        if(activity.Datum.Value < DateTime.Now || activity.Datum.Value.Year > DateTime.Now.Year)
+        {
+            Snackbar.Add("Välj ett godtyckligt datum", Severity.Normal);
+            return;
+        }
+
+        Calendar cal = dfi.Calendar;
+
+        // build data object
+        activity = new Activity()
+        {
+            ToDo = activity.ToDo,
+            Datum = activity.Datum,
+            Time = activity.Time,
+            Week = cal.GetWeekOfYear(activity.Datum.Value, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - 1,
+            IsDone = false,
+            Type = activity.Type
+        };
+
+        _context.Activities.Add(activity);
+
+        await _context.SaveChangesAsync();
+
+        StateHasChanged();
+        Snackbar.Add("Uppgift tillagd", Severity.Normal);
+        NavigationManager.NavigateTo("/schema");
+    }
+}

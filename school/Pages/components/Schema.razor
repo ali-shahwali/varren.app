@@ -4,14 +4,19 @@
     <MudTabPanel Text="Schema" Icon="@Icons.Material.Filled.Schedule">
         <SchemaTab/>
     </MudTabPanel>
-    <MudTabPanel Text="Lägg till" Icon="@Icons.Material.Filled.Add">
-        <AddEvent/>
-    </MudTabPanel>
     <MudTabPanel Icon="@Icons.Material.Filled.Build">
 
     </MudTabPanel>
+    <MudButton Style="position: fixed; right: 10px; bottom: 20px" Variant="@Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenPage">
+        Lägg till
+    </MudButton>
 </MudTabs>
 
 @code {
+
+    private void OpenPage()
+    {
+        NavigationManager.NavigateTo("/schema/add_activity");
+    }
 
 }

@@ -19,6 +19,7 @@ namespace school.Data
 
         public DbSet<Kod> Code { get; set; }
 
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+
     }
 }
