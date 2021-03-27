@@ -70,7 +70,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         username = authState.User.Identity.Name;
 
-        events = await _context.Events.OrderBy(x => x.Week).ToListAsync();
+        events = await _context.Events.Where(x => x.Username == username).OrderBy(x => x.Week).ToListAsync();
 
         foreach (var item in events)
         {
