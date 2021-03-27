@@ -1,6 +1,7 @@
 ﻿@page "/schema/add_event"
 @using System.Globalization
 @inject school.Data.ApplicationDbContext _context
+@inject UserManager<IdentityUser> _UserManager
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <EditForm Model="@ev" OnValidSubmit="OnValidSubmit">
@@ -48,7 +49,7 @@
 
         ev.Datum = ev.Datum.Value.AddSeconds(ev.Time.Value.TotalSeconds);
 
-        if(ev.Datum.Value < DateTime.Now || ev.Datum.Value.Year > DateTime.Now.Year)
+        if (ev.Datum.Value < DateTime.Now || ev.Datum.Value.Year > DateTime.Now.Year)
         {
             Snackbar.Add("Välj ett godtyckligt datum", Severity.Normal);
             return;
@@ -56,12 +57,16 @@
 
         Calendar cal = dfi.Calendar;
 
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
         // build data object
         ev = new Event()
         {
             ToDo = ev.ToDo,
             Datum = ev.Datum,
             Time = ev.Time,
+            Username = user.Identity.Name,
             Week = cal.GetWeekOfYear(ev.Datum.Value, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - 1,
             IsDone = false,
             Type = ev.Type

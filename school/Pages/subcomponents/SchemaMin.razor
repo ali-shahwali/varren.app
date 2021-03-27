@@ -21,14 +21,14 @@
         {
             <MudTd DataLabel="Status">Inte klart</MudTd>
             <MudTd>
-                <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(context.Id, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
+                <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(context, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
             </MudTd>
         }
         else
         {
             <MudTd DataLabel="Status">Klart!</MudTd>
             <MudTd>
-                <MudIconButton Color="Color.Warning" OnClick="@(e => UpdateStatus(context.Id, false))" Icon="@Icons.Material.Filled.Redo" />
+                <MudIconButton Color="Color.Warning" OnClick="@(e => UpdateStatus(context, false))" Icon="@Icons.Material.Filled.Redo" />
             </MudTd>
         }
     </RowTemplate>
@@ -45,13 +45,12 @@
         return new TableData<Event>() { Items = results };
     }
 
-    private async Task UpdateStatus(int id, bool b)
+    private async Task UpdateStatus(Event ev, bool b)
     {
-        Event ev = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
         ev.IsDone = b;
 
         _context.Events.Update(ev);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         StateHasChanged();
     }
 }

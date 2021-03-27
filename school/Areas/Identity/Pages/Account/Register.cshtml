@@ -84,13 +84,16 @@
 <body>
     <main class="form-signin">
         <form id="account" method="post">
+
             <label asp-for="Input.Email" class="visually-hidden">Email address</label>
             <input asp-for="Input.Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
             <label asp-for="Input.Password" class="visually-hidden">Lösenord</label>
             <input asp-for="Input.Password" type="password" id="inputPassword" class="form-control" placeholder="Lösenord" required>
             <label asp-for="Input.ConfirmPassword" class="visually-hidden">Bekräfta</label>
             <input asp-for="Input.ConfirmPassword" type="password" id="inputPassword" class="form-control" placeholder="Bekräfta lösenord" required>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <button type="submit" class="btn btn-primary">Registrera</button>
+            <a href="/Identity/Account/Login" class="btn btn-primary">Login</a>
         </form>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

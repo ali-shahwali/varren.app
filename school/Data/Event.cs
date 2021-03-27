@@ -15,6 +15,8 @@ namespace school.Data
 
         public int Week { get; set; }
 
+        public string Username { get; set; }
+
         public string ToDo { get; set; }
 
         public string Type { get; set; }

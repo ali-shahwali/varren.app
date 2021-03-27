@@ -62,10 +62,16 @@
 
     public List<int> Weeks { get; set; } = new List<int>();
 
+    private string username { get; set; }
+
     // LOAD DATA FROM DATABASE
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        username = authState.User.Identity.Name;
+
         events = await _context.Events.OrderBy(x => x.Week).ToListAsync();
+
         foreach (var item in events)
         {
             if(!Weeks.Contains(item.Week))
@@ -75,7 +81,7 @@
 
     private List<Event> GetByWeek(int week)
     {
-        return _context.Events.Where(x => x.Week == week).OrderBy(x => x.Datum).ToList();
+        return _context.Events.Where(x => x.Week == week && x.Username.Equals(username)).OrderBy(x => x.Datum).ToList();
     }
 
     private void UpdateStatus(Event ev, bool b)
