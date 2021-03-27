@@ -1,6 +1,6 @@
 ﻿@inject school.Data.ApplicationDbContext _context
 
-@if (activities == null)
+@if (events == null)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
@@ -23,28 +23,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var act in GetByWeek(item))
+                        @foreach (var ev in GetByWeek(item))
                         {
                         <tr>
-                            <td>@act.Datum.Value.ToShortDateString()</td>
-                            <td>@string.Format("{0:00}:{1:00}", act.Time.Value.Hours, act.Time.Value.Minutes)</td>
-                            <td>@act.ToDo</td>
-                            @if (!act.IsDone)
+                            <td>@ev.Datum.Value.ToShortDateString()</td>
+                            <td>@string.Format("{0:00}:{1:00}", ev.Time.Value.Hours, ev.Time.Value.Minutes)</td>
+                            <td>@ev.ToDo</td>
+                            @if (!ev.IsDone)
                             {
                                 <td>Inte klart</td>
                                 <td style="text-align: right">
-                                    <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(act, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
+                                    <MudIconButton Color="Color.Success" OnClick="@(e => UpdateStatus(ev, true))" Icon="@Icons.Custom.Uncategorized.AlertSuccess" />
                                 </td>
                             }
                             else
                             {
                                 <td>Klart</td>
                                 <td style="text-align: right">
-                                    <MudIconButton  Color="Color.Warning" OnClick="@(e => UpdateStatus(act, false))" Icon="@Icons.Material.Filled.Redo"/>
+                                    <MudIconButton  Color="Color.Warning" OnClick="@(e => UpdateStatus(ev, false))" Icon="@Icons.Material.Filled.Redo"/>
                                 </td>
                             }
                             <td>
-                                <MudIconButton Color="Color.Error" OnClick="@(e => Remove(act))" Icon="@Icons.Material.Filled.Close" />
+                                <MudIconButton Color="Color.Error" OnClick="@(e => Remove(ev))" Icon="@Icons.Material.Filled.Close" />
                             </td>
                         </tr>
                         }
@@ -58,39 +58,39 @@
 
 
 @code {
-    public List<Activity> activities { get; set; } = new List<Activity>();
+    public List<Event> events { get; set; } = new List<Event>();
 
     public List<int> Weeks { get; set; } = new List<int>();
 
     // LOAD DATA FROM DATABASE
     protected override async Task OnInitializedAsync()
     {
-        activities = await _context.Activities.OrderBy(x => x.Week).ToListAsync();
-        foreach (var item in activities)
+        events = await _context.Events.OrderBy(x => x.Week).ToListAsync();
+        foreach (var item in events)
         {
             if(!Weeks.Contains(item.Week))
                 Weeks.Add(item.Week);
         }
     }
 
-    private List<Activity> GetByWeek(int week)
+    private List<Event> GetByWeek(int week)
     {
-        return _context.Activities.Where(x => x.Week == week).OrderBy(x => x.Datum).ToList();
+        return _context.Events.Where(x => x.Week == week).OrderBy(x => x.Datum).ToList();
     }
 
-    private void UpdateStatus(Activity act, bool b)
+    private void UpdateStatus(Event ev, bool b)
     {
-        act.IsDone = b;
+        ev.IsDone = b;
 
-        _context.Activities.Update(act);
+        _context.Events.Update(ev);
         _context.SaveChanges();
         StateHasChanged();
     }
 
-    
-    private void Remove(Activity act)
+
+    private void Remove(Event ev)
     {
-        _context.Activities.Remove(act);
+        _context.Events.Remove(ev);
         _context.SaveChanges();
         StateHasChanged();
     }

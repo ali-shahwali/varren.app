@@ -219,7 +219,7 @@ namespace school.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("school.Data.Activity", b =>
+            modelBuilder.Entity("school.Data.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,7 +246,7 @@ namespace school.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("school.Data.Kod", b =>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace school.Data
 {
-    public class Activity
+    public class Event
     {
         public int Id { get; set; }
 

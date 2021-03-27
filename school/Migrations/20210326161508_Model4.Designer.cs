@@ -10,8 +10,8 @@ using school.Data;
 namespace school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210326114144_ScheduleModel12")]
-    partial class ScheduleModel12
+    [Migration("20210326161508_Model4")]
+    partial class Model4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,7 +221,7 @@ namespace school.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("school.Data.Activity", b =>
+            modelBuilder.Entity("school.Data.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,7 +248,7 @@ namespace school.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("school.Data.Kod", b =>

@@ -1,28 +1,28 @@
-﻿@page "/schema/add_activity"
+﻿@page "/schema/add_event"
 @using System.Globalization
 @inject school.Data.ApplicationDbContext _context
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
-    <EditForm Model="@activity" OnValidSubmit="OnValidSubmit">
+    <EditForm Model="@ev" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator />
         <MudGrid Spacing="6" Class="mt-16">
             <MudItem xs="7">
                 <MudText Typo="Typo.h5" GutterBottom="true">Lägg till</MudText>
                 <MudGrid>
                     <MudItem xs="12">
-                        <MudTextField T="string" Label="Att göra" @bind-Value="activity.ToDo" For="@(() => activity.ToDo)" />
+                        <MudTextField T="string" Label="Att göra" @bind-Value="ev.ToDo" For="@(() => ev.ToDo)" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudSelect T="string" @bind-Value="activity.Type" Label="Typ">
+                        <MudSelect T="string" @bind-Value="ev.Type" Label="Typ">
                             <MudSelectItem Value="@("Programmering")"> Programmering </MudSelectItem>
                             <MudSelectItem Value="@("Skola")"> Skola </MudSelectItem>
                         </MudSelect>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudDatePicker Label="Datum" @bind-Date="activity.Datum" />
+                        <MudDatePicker Label="Datum" @bind-Date="ev.Datum" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTimePicker Label="Tid" AmPm="true" @bind-Time="activity.Time" />
+                        <MudTimePicker Label="Tid" AmPm="true" @bind-Time="ev.Time" />
                     </MudItem>
                     <MudItem Class="d-flex justify-end" xs="6">
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Skapa</MudButton>
@@ -34,21 +34,21 @@
 </MudContainer>
 
 @code {
-    Activity activity = new Activity();
+    Event ev = new Event();
 
     DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
 
     public async Task OnValidSubmit(EditContext context)
     {
-        if (activity.Time == null || activity.Datum == null)
+        if (ev.Time == null || ev.Datum == null)
         {
             Snackbar.Add("Välj datum och tid", Severity.Normal);
             return;
         }
 
-        activity.Datum = activity.Datum.Value.AddSeconds(activity.Time.Value.TotalSeconds);
+        ev.Datum = ev.Datum.Value.AddSeconds(ev.Time.Value.TotalSeconds);
 
-        if(activity.Datum.Value < DateTime.Now || activity.Datum.Value.Year > DateTime.Now.Year)
+        if(ev.Datum.Value < DateTime.Now || ev.Datum.Value.Year > DateTime.Now.Year)
         {
             Snackbar.Add("Välj ett godtyckligt datum", Severity.Normal);
             return;
@@ -57,17 +57,17 @@
         Calendar cal = dfi.Calendar;
 
         // build data object
-        activity = new Activity()
+        ev = new Event()
         {
-            ToDo = activity.ToDo,
-            Datum = activity.Datum,
-            Time = activity.Time,
-            Week = cal.GetWeekOfYear(activity.Datum.Value, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - 1,
+            ToDo = ev.ToDo,
+            Datum = ev.Datum,
+            Time = ev.Time,
+            Week = cal.GetWeekOfYear(ev.Datum.Value, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - 1,
             IsDone = false,
-            Type = activity.Type
+            Type = ev.Type
         };
 
-        _context.Activities.Add(activity);
+        _context.Events.Add(ev);
 
         await _context.SaveChangesAsync();
 
