@@ -21,5 +21,7 @@ namespace school.Data
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<Profile> Profiles { get; set; }
+
     }
 }

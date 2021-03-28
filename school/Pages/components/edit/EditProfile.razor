@@ -1,0 +1,133 @@
+﻿@page "/edit_profile"
+@using System.Security.Claims
+@using System.IO
+@inject school.Data.ApplicationDbContext _context
+@inject UserManager<IdentityUser> _UserManager
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <EditForm Model="Profile" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid Spacing="6" Class="mt-16">
+            <MudItem xs="7">
+                <MudText Typo="Typo.h5" GutterBottom="true">Din profil</MudText>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText>@Profile.Mail</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Namn" Placeholder="@Profile.Name" @bind-Value="Profile.Name" />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <BlazorInputFile.InputFile id="fileInput" OnChange="HandleFileSelected" hidden />
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                            Ändra profilbild
+                        </MudButton>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="4">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Update</MudButton>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-end" xs="4">
+                        <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="ToggleDeleteBox" Variant="Variant.Filled" Color="Color.Error" Class="ml-auto">Delete account</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>
+
+@* DELETE PROMPT *@
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        Are you sure? This action cannot be undone.
+    </MessageContent>
+    <YesButton>
+        <MudButton OnClick="DeleteAccount" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">I am sure</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private MudMessageBox mbox { get; set; }
+
+    private string state = "Message box hasn't been opened yet";
+
+    private ClaimsPrincipal User { get; set; }
+
+    private IdentityUser Account { get; set; }
+
+    private Profile Profile = new Profile();
+
+    IFileListEntry file;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        User = authState.User;
+        Account = await _UserManager.Users.Where(x => x.UserName.Equals(User.Identity.Name)).FirstOrDefaultAsync();
+        Profile = await _context.Profiles.Where(x => x.Mail.Equals(Account.Email)).FirstOrDefaultAsync();
+    }
+
+    public async void HandleFileSelected(IFileListEntry[] files)
+    {
+        file = files.FirstOrDefault();
+
+        await GetFileData();
+
+        StateHasChanged();
+    }
+
+    private async Task GetFileData()
+    {
+
+        using (Stream stream = file.Data)
+        {
+
+            byte[] bytes = new byte[stream.Length];
+            int numBytesToRead = (int)stream.Length;
+            int numBytesRead = 0;
+
+            while (numBytesToRead > 0)
+            {
+
+                int n = await stream.ReadAsync(bytes, numBytesRead, numBytesToRead);
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            Profile.ProfilePicture = bytes;
+            stream.Close();
+        }
+    }
+
+    private async Task ToggleDeleteBox()
+    {
+        bool? result = await mbox.Show();
+        state = result == null ? "Cancelled" : "Deleted!";
+        StateHasChanged();
+    }
+
+    private async Task DeleteAccount()
+    {
+        _context.Users.Remove(Account);
+        await _context.SaveChangesAsync();
+
+        NavigationManager.NavigateTo("/");
+    }
+
+    public async Task OnValidSubmit(EditContext context)
+    {
+        _context.Profiles.Update(Profile);
+        await _context.SaveChangesAsync();
+        StateHasChanged();
+        NavigationManager.NavigateTo("/");
+    }
+}
+

@@ -13,14 +13,10 @@
             <HeaderContent>
                 <MudTh>ID</MudTh>
                 <MudTh>E-mail</MudTh>
-                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="ID">@context.Id</MudTd>
                 <MudTd DataLabel="E-mail">@context.UserName</MudTd>
-                <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(e => OpenEditPage(context.Id))"/>
-                </MudTd>
             </RowTemplate>
         </MudTable>
     </MudTabPanel>
@@ -55,11 +51,6 @@
 
         StateHasChanged();
         return new TableData<IdentityUser>() { Items = results };
-    }
-
-    private void OpenEditPage(string id)
-    {
-        NavigationManager.NavigateTo($"/administration/edit/{id}");
     }
 
     public void Active(string s)
