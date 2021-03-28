@@ -19,9 +19,15 @@
             <MudIconButton OnClick="@(e => NewTabPdf(context))" Target="top" Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Secondary" />
         </MudTd>
         <AuthorizeView Roles="Admin" Context="table">
-            <MudTd>
-                <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-            </MudTd>
+            <Authorized>
+                <MudTd>
+                    <MudIconButton OnClick="@(e => ToggleDeleteBox(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                </MudTd>
+            </Authorized>
+            <NotAuthorized>
+                <MudTd>
+                </MudTd>
+            </NotAuthorized>
         </AuthorizeView>
         <MudTd />
     </RowTemplate>
