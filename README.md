@@ -8,4 +8,3 @@
 - View and upload PDF files
 - View, edit, upload code with syntax coloring and HTML live compile and run feature
 - Scheduler to schedule future activities
-# https://varren.app/
